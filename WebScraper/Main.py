@@ -2,8 +2,8 @@
 
 #Mian program :
 # How to execute it : 
-# work : C:\Users\franc\AppData\Local\Programs\Python\Python37-32\python.exe D:\DEV\WebScraper\Main.py "Kayak" "AMS" "BCN" "10/10/2018" "18/10/2018"
-# Home : C:\Users\franc\AppData\Local\Programs\Python\Python37\python.exe C:\DEV\WebScraper\Main.py "Kayak" "AMS" "BCN" "10/10/2018" "18/10/2018"
+# work : C:\Users\franc\AppData\Local\Programs\Python\Python37-32\python.exe D:\DEV\Batch1\WebScraper\Main.py "Kayak" "AMS" "BCN" "10/10/2018" "18/10/2018"
+# Home : C:\Users\franc\AppData\Local\Programs\Python\Python37\python.exe C:\DEV\Batch1\WebScraper\Main.py "Kayak" "AMS" "BCN" "10/10/2018" "18/10/2018"
 # Packages to install (in C:\Users\franc\AppData\Local\Programs\Python\Python37-32) : 
 #==>  python -m pip install pypyodbc
 #==>  python -m pip install selenium
