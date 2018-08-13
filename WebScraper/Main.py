@@ -2,8 +2,8 @@
 
 #Mian program :
 # How to execute it : 
-# work : C:\Users\franc\AppData\Local\Programs\Python\Python37-32\python.exe D:\DEV\Batch1\WebScraper\Main.py "Kayak" "AMS" "BCN" "10/10/2018" "18/10/2018"
-# Home : C:\Users\franc\AppData\Local\Programs\Python\Python37\python.exe C:\DEV\Batch1\WebScraper\Main.py "Kayak" "AMS" "BCN" "10/10/2018" "18/10/2018"
+# work : C:\Users\franc\AppData\Local\Programs\Python\Python37-32\python.exe D:\DEV\Batch1\WebScraper\Main.py "195.64.223.116:3128" "Kayak" "AMS" "BCN" "10/10/2018" "18/10/2018"
+# Home : C:\Users\franc\AppData\Local\Programs\Python\Python37\python.exe C:\DEV\Batch1\WebScraper\Main.py "195.64.223.116:3128" "Kayak" "AMS" "BCN" "10/10/2018" "18/10/2018"
 # Packages to install (in C:\Users\franc\AppData\Local\Programs\Python\Python37-32) : 
 #==>  python -m pip install pypyodbc
 #==>  python -m pip install selenium
@@ -19,18 +19,18 @@ from Provider.Kayak import SearchKayak
 try:
 
 	print("*** Start Web Scraper ***")
-	if len(sys.argv) < 4 or  len(sys.argv) > 6:
+	if len(sys.argv) < 5 or  len(sys.argv) > 7:
 		print("Arguments missing")
-
-	provider=sys.argv[1]
-	origin=sys.argv[2]
-	destination=sys.argv[3]
-	fromDate=sys.argv[4]
-	toDate=sys.argv[5]
+	proxy=sys.argv[1]
+	provider=sys.argv[2]
+	origin=sys.argv[3]
+	destination=sys.argv[4]
+	fromDate=sys.argv[5]
+	toDate=sys.argv[6]
 	print("provider = "+provider+" and origin= "+origin+" and destination = "+destination+" and fromDate = "+fromDate+" and toDate = "+toDate)
 	
 	if provider=="Kayak":
-		SearchKayak(origin,destination,fromDate,toDate)
+		SearchKayak(proxy,origin,destination,fromDate,toDate)
 	
 except Exception:
 	LogError(''.join(traceback.format_exc()))

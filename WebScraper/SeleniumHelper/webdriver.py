@@ -6,34 +6,67 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC 
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.proxy import Proxy, ProxyType
+from Logger.logger import *
 
-def getFirefoxDriver(proxy,port):
+def getFirefoxDriver(host,port):
 	try:
-        binary_argument = FirefoxBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe")
-        binary_argument = FirefoxBinary("C:\\webdrivers\\FirefoxPortable\\FirefoxPortable.exe")
-        capabilities_argument = DesiredCapabilities().FIREFOX
-        capabilities_argument["marionette"] = False
-        profile = webdriver.FirefoxProfile()
-        profile.set_preference("network.proxy.type", 1);
-        profile.set_preference("network.proxy.http", proxy);
-        profile.set_preference("network.proxy.http_port", port);
-        profile.set_preference("network.proxy.ssl", proxy);
-        profile.set_preference("network.proxy.ssl_port", port);
-		#driver = webdriver.Firefox(firefox_binary=binary_argument, capabilities=capabilities_argument);
-        driver = webdriver.Firefox(executable_path="C:\\webdrivers\\geckodriver.exe")
-        driver.get("http://icanhazip.com")
-        return driver
-    except Exception:
-       LogError(''.join(traceback.format_exc()),"proxy = "+proxy+" and port = "+port)
-	return null
+		path='C:\\webdrivers\\geckodriver.exe'
+		fullproxy = host+":"+port
+		#https://stackoverflow.com/questions/17082425/running-selenium-webdriver-with-a-proxy-in-python
+		firefox_capabilities = DesiredCapabilities.FIREFOX
+		firefox_capabilities['marionette'] = True
+		webdriver.DesiredCapabilities.FIREFOX['proxy']={
+			"httpProxy":fullproxy,
+			"ftpProxy":fullproxy,
+			"sslProxy":fullproxy,
+			"noProxy":None,
+			"proxyType":"MANUAL",
+			"autodetect":False
+		}		
+		prox = Proxy()
+		prox.proxy_type = ProxyType.MANUAL
+		prox.http_proxy = fullproxy
+		prox.socks_proxy = fullproxy
+		prox.ssl_proxy =fullproxy	
+		#prox.add_to_capabilities(firefox_capabilities)
+		fp = webdriver.FirefoxProfile()
+		fp.set_preference("network.proxy.type", 1)
+		fp.set_preference("network.proxy.http",host)
+		fp.set_preference("network.proxy.http_port",int(port))
+		fp.set_preference("network.proxy.https",host)
+		fp.set_preference("network.proxy.https_port",int(port))
+		fp.set_preference("network.proxy.ssl",host)
+		fp.set_preference("network.proxy.ssl_port",int(port))  
+		fp.set_preference("network.proxy.ftp",host)
+		fp.set_preference("network.proxy.ftp_port",int(port))   
+		fp.set_preference("network.proxy.socks",host)
+		fp.set_preference("network.proxy.socks_port",int(port))   
+		#fp.set_preference("general.useragent.override","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A")
+		fp.update_preferences()
+		driver = webdriver.Firefox(executable_path=path)
+
+
+		return driver
+	except Exception:
+		LogError(''.join(traceback.format_exc()),"host = "+host+" and port = "+port)
+	return getGoogleChromeDriver(host+":"+port)
 		
 	
-def getGoogleChromeDriver():
+def getGoogleChromeDriver(fullproxy):
 	try:
-	    option = webdriver.ChromeOptions()
-	    option.add_argument("--incognito")
-	    browser = webdriver.Chrome(executable_path="C:\\webdrivers\\chromedriver.exe", chrome_options=option)
-	    return browser
+		option = webdriver.ChromeOptions()
+		option.add_argument("--incognito")
+		prox = Proxy()
+		prox.proxy_type = ProxyType.MANUAL
+		prox.http_proxy = fullproxy
+		prox.socks_proxy = fullproxy
+		prox.ssl_proxy =fullproxy
+
+		capabilities = webdriver.DesiredCapabilities.CHROME
+		prox.add_to_capabilities(capabilities)
+		browser = webdriver.Chrome(executable_path="C:\\webdrivers\\chromedriver.exe", chrome_options=option,desired_capabilities=capabilities)
+		return browser
 	except Exception:
-       LogError(''.join(traceback.format_exc()))
+		LogError(''.join(traceback.format_exc()),"fullproxy = "+fullproxy)
 	return null		

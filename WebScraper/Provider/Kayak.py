@@ -12,15 +12,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 
-def SearchKayak(origin,destination,fromDate,toDate):
-	print ("** Begin Kayak **")
-	url="https://github.com/TheDancerCodes"
-	
-	#option = webdriver.ChromeOptions()
-	#option.add_argument("--incognito")
-	#browser = webdriver.Chrome(executable_path="C:\\webdrivers\\chromedriver.exe", chrome_options=option)
-	browser=getFirefoxDriver("189.115.161.38","3128 ")
-	browser.get(url)
-	print ("** End Kayak **")
-	return
+def SearchKayak(proxy,origin,destination,fromDate,toDate):
+	try:
+		print ("** Begin Kayak **")
+		url="https://staging.frontfundr.com/Experiment/CheckIP"
+
+		browser=getGoogleChromeDriver(proxy)
+		browser.get(url)
+		print ("** End Kayak **")
+	except Exception:
+		LogError(''.join(traceback.format_exc()),"proxy = "+proxy+" and origin = "+origin+" and destination = "+destination+" and fromDate = "+fromDate+" and toDate = "+toDate)
+	return	
 
