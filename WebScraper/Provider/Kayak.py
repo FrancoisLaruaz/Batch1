@@ -15,7 +15,8 @@ from selenium.webdriver.chrome.options import Options
 def SearchKayak(proxy,origin,destination,fromDate,toDate):
 	try:
 		print ("** Begin Kayak **")
-		url="https://staging.frontfundr.com/Experiment/CheckIP"
+		#https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list.txt
+		url="https://kayak.com"
 
 		browser=getGoogleChromeDriver(proxy)
 		browser.get(url)
