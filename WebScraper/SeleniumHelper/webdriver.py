@@ -8,6 +8,8 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 from Logger.logger import *
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
 
 def getFirefoxDriver(host,port):
 	try:
@@ -51,7 +53,18 @@ def getFirefoxDriver(host,port):
 	except Exception:
 		LogError(''.join(traceback.format_exc()),"host = "+host+" and port = "+port)
 	return getGoogleChromeDriver(host+":"+port)
-		
+	
+def waitForWebdriver(browser,css_selector):
+	delay = 55 # seconds
+	try:
+		print("begin wait for "+css_selector)
+		wait = WebDriverWait(browser, delay)
+		print("before test")
+		wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
+		print("end wait")
+	except Exception:
+		LogError(''.join(traceback.format_exc()),"css_selector = "+css_selector)
+	return			
 	
 def getGoogleChromeDriver(fullproxy):
 	try:

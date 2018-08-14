@@ -12,16 +12,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 
-def SearchKayak(proxy,origin,destination,fromDate,toDate):
+def SearchKayak(proxy,origin,destination,direct,fromDate,toDate):
 	try:
 		print ("** Begin Kayak **")
-		#https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list.txt
-		url="https://kayak.com"
-
+		url="https://ca.edreams.com/travel/#results/type=R;dep=2018-12-19;from=YVR;to=DUB;ret=2019-01-06;collectionmethod=false;airlinescodes=false;internalSearch=true"
 		browser=getGoogleChromeDriver(proxy)
 		browser.get(url)
 		print ("** End Kayak **")
 	except Exception:
-		LogError(''.join(traceback.format_exc()),"proxy = "+proxy+" and origin = "+origin+" and destination = "+destination+" and fromDate = "+fromDate+" and toDate = "+toDate)
+		LogError(''.join(traceback.format_exc()),"proxy = "+proxy+" and origin = "+origin+" and destination = "+destination+" and fromDate = "+fromDate+" and toDate = "+toDate+" and direct = "+direct)
 	return	
 
