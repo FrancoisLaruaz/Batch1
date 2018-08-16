@@ -20,6 +20,6 @@ def SearchKayak(proxy,origin,destination,direct,fromDate,toDate):
 		browser.get(url)
 		print ("** End Kayak **")
 	except Exception:
-		LogError(''.join(traceback.format_exc()),"proxy = "+proxy+" and origin = "+origin+" and destination = "+destination+" and fromDate = "+fromDate+" and toDate = "+toDate+" and direct = "+direct)
+		LogError(traceback,"proxy = "+proxy+" and origin = "+origin+" and destination = "+destination+" and fromDate = "+fromDate+" and toDate = "+toDate+" and direct = "+direct)
 	return	
 

@@ -2,8 +2,8 @@
 
 #Mian program :
 # How to execute it : 
-# work : C:\Users\franc\AppData\Local\Programs\Python\Python37-32\python.exe D:\DEV\Batch1\WebScraper\Main.py "89.31.42.126:8080" "Edreams" "AMS" "BCN" "false" "10/10/2018" "18/10/2018"
-# Home : C:\Users\franc\AppData\Local\Programs\Python\Python37\python.exe C:\DEV\Batch1\WebScraper\Main.py "195.64.223.116:3128" "Kayak" "AMS" "BCN" "false" "10/10/2018" "18/10/2018"
+# work : C:\Users\franc\AppData\Local\Programs\Python\Python37-32\python.exe D:\DEV\Batch1\WebScraper\Main.py "109.106.136.6:9001" "Edreams" "NYC" "BCN" "false" "10/10/2018" "18/10/2018"
+# Home : C:\Users\franc\AppData\Local\Programs\Python\Python37\python.exe C:\DEV\Batch1\WebScraper\Main.py "195.64.223.116:3128" "Kayak" "NYC" "BCN" "false" "10/10/2018" "18/10/2018"
 # Packages to install (in C:\Users\franc\AppData\Local\Programs\Python\Python37-32) : 
 #==>  python -m pip install pypyodbc
 #==>  python -m pip install selenium
@@ -31,7 +31,7 @@ try:
 	direct=sys.argv[5]
 	fromDate=sys.argv[6]
 	toDate=sys.argv[7]
-	print("provider = "+provider+" and origin= "+origin+" and destination = "+destination+" and fromDate = "+fromDate+" and toDate = "+toDate+" and direct = "+direct)
+	print("provider = "+provider+" and origin= "+origin+" and destination = "+destination+" and fromDate = "+fromDate+" and toDate = "+toDate+" and direct = "+direct+"\n")
 	
 	if provider=="Kayak":
 		SearchKayak(proxy,origin,destination,direct,fromDate,toDate)
@@ -39,6 +39,6 @@ try:
 		SearchEdreams(proxy,origin,destination,direct,fromDate,toDate)		
 	
 except Exception:
-	LogError(''.join(traceback.format_exc()))
+	LogError(traceback)
 print("*** End Web Scraper ***")
 os.system("pause")

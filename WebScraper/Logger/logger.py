@@ -5,7 +5,8 @@ import traceback
 
 from DBConnection.SQLConnect import *
 
-def LogError(error,details=""):
+def LogError(traceback,details=""):
+   error=''.join(traceback.format_exc())	
    print ("ERROR CATCHED : "+error+"| details = "+details)
    date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
    query = """INSERT INTO [dbo].[Log4Net]

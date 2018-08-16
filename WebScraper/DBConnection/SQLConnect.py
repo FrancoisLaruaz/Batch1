@@ -14,5 +14,5 @@ def ExecuteQuery(query):
 		connection.close()
 	except Exception:
 		print(''.join(traceback.format_exc())+" and query = "+query)	
-		LogError(''.join(traceback.format_exc()),query)	
+		LogError(traceback,"query = "+query)	
 	return

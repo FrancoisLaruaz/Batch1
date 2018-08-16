@@ -10,6 +10,8 @@ from selenium.webdriver.common.proxy import Proxy, ProxyType
 from Logger.logger import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
+from datetime import datetime, timezone
+import time
 
 def getFirefoxDriver(host,port):
 	try:
@@ -51,19 +53,19 @@ def getFirefoxDriver(host,port):
 
 		return driver
 	except Exception:
-		LogError(''.join(traceback.format_exc()),"host = "+host+" and port = "+port)
+		LogError(traceback,"host = "+host+" and port = "+port)
 	return getGoogleChromeDriver(host+":"+port)
 	
 def waitForWebdriver(browser,css_selector):
-	delay = 55 # seconds
+	delay = 60 # seconds
 	try:
-		print("begin wait for "+css_selector)
-		wait = WebDriverWait(browser, delay)
-		print("before test")
+		print("begin wait for "+css_selector+" : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
+		wait = WebDriverWait(browser, delay)		
 		wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
-		print("end wait")
+		print("end wait : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
+		time.sleep(1)	
 	except Exception:
-		LogError(''.join(traceback.format_exc()),"css_selector = "+css_selector)
+		LogError(traceback,"css_selector = "+css_selector)
 	return			
 	
 def getGoogleChromeDriver(fullproxy):
@@ -81,5 +83,5 @@ def getGoogleChromeDriver(fullproxy):
 		browser = webdriver.Chrome(executable_path="C:\\webdrivers\\chromedriver.exe", chrome_options=option,desired_capabilities=capabilities)
 		return browser
 	except Exception:
-		LogError(''.join(traceback.format_exc()),"fullproxy = "+fullproxy)
+		LogError(traceback,"fullproxy = "+fullproxy)
 	return null		

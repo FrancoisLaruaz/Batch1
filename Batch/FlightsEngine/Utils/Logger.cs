@@ -46,7 +46,7 @@ namespace FlightsEngine.Utils
             return result;
         }
 
-        public static void GenrateWebError(WebException e, System.Type type = null, string Details = null)
+        public static void GenerateWebError(WebException e, System.Type type = null, string Details = null)
         {
             try
             {

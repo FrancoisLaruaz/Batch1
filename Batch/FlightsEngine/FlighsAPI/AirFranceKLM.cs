@@ -101,7 +101,7 @@ namespace FlightsEngine.FlighsAPI
                 catch (WebException e)
                 {
                     result = false;
-                    FlightsEngine.Utils.Logger.GenrateWebError(e, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType,  filters.ToSpecialString());
+                    FlightsEngine.Utils.Logger.GenerateWebError(e, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType,  filters.ToSpecialString());
                 }
 
                 if (result)
