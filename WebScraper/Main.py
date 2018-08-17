@@ -2,7 +2,7 @@
 
 #Mian program :
 # How to execute it : 
-# work : C:\Users\franc\AppData\Local\Programs\Python\Python37-32\python.exe D:\DEV\Batch1\WebScraper\Main.py "109.106.136.6:9001" "Edreams" "NYC" "BCN" "false" "10/10/2018" "18/10/2018"
+# work : C:\Users\franc\AppData\Local\Programs\Python\Python37-32\python.exe D:\DEV\Batch1\WebScraper\Main.py "190.151.94.45:8080" "Edreams" "RNS" "TYO" "false" "10/10/2018" "18/10/2018"
 # Home : C:\Users\franc\AppData\Local\Programs\Python\Python37\python.exe C:\DEV\Batch1\WebScraper\Main.py "195.64.223.116:3128" "Kayak" "NYC" "BCN" "false" "10/10/2018" "18/10/2018"
 # Packages to install (in C:\Users\franc\AppData\Local\Programs\Python\Python37-32) : 
 #==>  python -m pip install pypyodbc

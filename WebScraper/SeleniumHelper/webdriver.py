@@ -12,6 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from datetime import datetime, timezone
 import time
+from selenium.common.exceptions import NoSuchElementException
 
 def getFirefoxDriver(host,port):
 	try:
@@ -56,16 +57,20 @@ def getFirefoxDriver(host,port):
 		LogError(traceback,"host = "+host+" and port = "+port)
 	return getGoogleChromeDriver(host+":"+port)
 	
-def waitForWebdriver(browser,css_selector):
+def waitForWebdriver(browser,css_selectorOK,css_selectorKO=""):
 	delay = 60 # seconds
 	try:
+		if css_selectorKO!="":
+			css_selector=css_selectorOK+", "+css_selectorKO
+		else:
+			css_selector=css_selectorOK
 		print("begin wait for "+css_selector+" : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
 		wait = WebDriverWait(browser, delay)		
 		wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
 		print("end wait : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
 		time.sleep(1)	
 	except Exception:
-		LogError(traceback,"css_selector = "+css_selector)
+		LogError(traceback,"css_selectorOK = "+css_selectorOK+" and css_selectorKO = "+css_selectorKO)
 	return			
 	
 def getGoogleChromeDriver(fullproxy):
@@ -84,4 +89,13 @@ def getGoogleChromeDriver(fullproxy):
 		return browser
 	except Exception:
 		LogError(traceback,"fullproxy = "+fullproxy)
-	return null		
+	return null	
+	
+def checkExistsByXpath(webElement,xpath):
+	try:
+		webElement.find_element_by_xpath(xpath)
+	except NoSuchElementException:
+		return False
+	return True	
+
+	
