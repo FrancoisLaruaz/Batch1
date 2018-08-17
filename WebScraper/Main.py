@@ -11,6 +11,7 @@
 #==> download https://chromedriver.storage.googleapis.com/index.html?path=2.31/  and follow https://www.youtube.com/watch?v=dz59GsdvUF8
 
 #Take proxy : https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list.txt
+# or http://pubproxy.com/api/proxy?limit=1000&format=txt&http=true&country=TH&type=https
 
 import os # On importe le module os
 import sys

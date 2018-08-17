@@ -69,6 +69,10 @@ def ExtractData(element,url,fromDate,toDate):
 					rightDiv=flight.find_element_by_xpath(".//div[@class='odf-row-fluid odf-text-left odf-text-sm od-secondary-flight-info-time-stops-wrapper']")
 					time=flight.find_element_by_xpath(".//div[@class='odf-row odf-h3']").text.replace(" ", "");
 					print("time = "+time)
+					
+					departureTime=fromDate+' '+time.split('-')[0]
+					print("departureTime = "+departureTime)
+					print("arrivalTime = "+arrivalTime)
 					duration=getDurationMinute(rightDiv.find_element_by_xpath(".//span[@class='odf-text-nowrap']").text);
 					print("duration = "+str(duration))
 					if checkExistsByXpath(rightDiv,".//span[@class='odf-text-nowrap number_stop ']"):
@@ -96,7 +100,7 @@ def ExtractData(element,url,fromDate,toDate):
 					toAirport=cities.split('(')[2].split(')')[0]
 					print("fromAirport = "+fromAirport)
 					print("toAirport = "+toAirport+"\n")
-					trip=Trip(fromAirport,toAirport,duration,fromDate,toDate,airline,airlineSrc,stopNumber)
+					trip=Trip(fromAirport,toAirport,duration,departureTime,arrivalTime,airline,airlineSrc,stopNumber)
 					if wayId=="1":
 						OneWayTrips.append(trip)
 					elif wayId=="2":

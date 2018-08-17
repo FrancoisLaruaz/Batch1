@@ -67,8 +67,7 @@ def waitForWebdriver(browser,css_selectorOK,css_selectorKO=""):
 		print("begin wait for "+css_selector+" : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
 		wait = WebDriverWait(browser, delay)		
 		wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
-		print("end wait : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
-		time.sleep(1)	
+		print("end wait : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])	
 	except Exception:
 		LogError(traceback,"css_selectorOK = "+css_selectorOK+" and css_selectorKO = "+css_selectorKO)
 	return			
