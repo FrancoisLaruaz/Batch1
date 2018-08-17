@@ -13,6 +13,8 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from Model.Trip import *
 from Helper.providerHelper import *
+import re
+from DBConnection.trip import *
 
 def SearchEdreams(proxy,origin,destination,direct,fromDate,toDate):
 	try:
@@ -27,11 +29,11 @@ def SearchEdreams(proxy,origin,destination,direct,fromDate,toDate):
 		waitForWebdriver(browser,".od-resultpage-highlight-title",".dialog_error")		
 		elements = browser.find_elements_by_xpath("//div[@class='result od-resultpage-wrapper    ']")
 		for element in elements:
-			ExtractData(element,url)
+			ExtractData(element,url,fromDate,toDate)
 		elements = browser.find_elements_by_xpath("//div[@class='result od-resultpage-wrapper highlighted odf-box  ']")
 		for element in elements:
-			ExtractData(element,url)			
-		
+			ExtractData(element,url,fromDate,toDate)		
+		browser.quit()
 		print ("** End Edreams **\n")
 	except Exception:
 		LogError(traceback,"proxy = "+proxy+" and origin = "+origin+" and destination = "+destination+" and fromDate = "+fromDate+" and toDate = "+toDate+" and direct = "+direct)
@@ -68,7 +70,7 @@ def ExtractData(element,url,fromDate,toDate):
 					time=flight.find_element_by_xpath(".//div[@class='odf-row odf-h3']").text.replace(" ", "");
 					print("time = "+time)
 					duration=getDurationMinute(rightDiv.find_element_by_xpath(".//span[@class='odf-text-nowrap']").text);
-					print("duration = "+duration)
+					print("duration = "+str(duration))
 					if checkExistsByXpath(rightDiv,".//span[@class='odf-text-nowrap number_stop ']"):
 						stopNumber=rightDiv.find_element_by_xpath(".//span[@class='odf-text-nowrap number_stop ']").text.split(' ')[0];
 						print("stop Number = "+stopNumber)
@@ -89,15 +91,24 @@ def ExtractData(element,url,fromDate,toDate):
 					print("airlineSrc = "+airlineSrc)
 						
 					cities=flight.find_element_by_xpath(".//div[@class='odf-row odf-text-sm od-primary-flight-info-cities hover-active-tooltip odf-text-mono-color-03 flight_info_cities odf-text-nowrap']").text;
-					print("cities = "+cities+"\n")
-					trip=Trip()
-					if way==1:
+					print("cities = "+cities)
+					fromAirport=cities.split('(')[1].split(')')[0]
+					toAirport=cities.split('(')[2].split(')')[0]
+					print("fromAirport = "+fromAirport)
+					print("toAirport = "+toAirport+"\n")
+					trip=Trip(fromAirport,toAirport,duration,fromDate,toDate,airline,airlineSrc,stopNumber)
+					if wayId=="1":
 						OneWayTrips.append(trip)
-					elif way==2
-						ReturnTrips.append(trip)
-				
+					elif wayId=="2":
+						ReturnTrips.append(trip)				
 			price=element.find_element_by_xpath(".//div[@class='od-price-container  ']").text.replace(" ", "").replace("*", "");
 			print("price = "+price)
+			print("len(OneWayTrips) = "+str(len(OneWayTrips)))
+			print("len(ReturnTrips) = "+str(len(ReturnTrips)))
+			for OneWayTrip in OneWayTrips :
+				if len(ReturnTrips)>0 :
+					for ReturnTrip in ReturnTrips :
+						InsertTrip("Edreams",fromDate,toDate,price,url,OneWayTrip,ReturnTrip)
 		else:
 			print("Train spotted")
 

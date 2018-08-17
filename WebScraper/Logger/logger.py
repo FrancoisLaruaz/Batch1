@@ -2,14 +2,15 @@ import os
 import sys
 from datetime import datetime, timezone
 import traceback
-
-from DBConnection.SQLConnect import *
+import pypyodbc
+from Helper.constants import *
 
 def LogError(traceback,details=""):
-   error=''.join(traceback.format_exc())	
-   print ("ERROR CATCHED : "+error+"| details = "+details)
-   date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-   query = """INSERT INTO [dbo].[Log4Net]
+	try:
+		error=''.join(traceback.format_exc())	
+		print ("ERROR CATCHED : "+error+"| details = "+details)
+		date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+		query = """INSERT INTO [dbo].[Log4Net]
            ([Thread]
            ,[Level]
            ,[Logger]
@@ -17,11 +18,18 @@ def LogError(traceback,details=""):
            ,[Exception]
            ,[UserLogin]
 		   ,[Date])
-     VALUES
-           (1
+		VALUES
+           (0
            ,'ERROR'
            ,'PYTHON ERROR'
            ,'"""+details.replace("'","''")[:8000]+"','"+error.replace("'","''")[:5000]+"','***Batch***','"+date.replace("'","''")+".000')"
-   ExecuteQuery(query)
-   return
+		connection = pypyodbc.connect(connection_string)
+		cur = connection.cursor()
+		cur.execute(query)
+		cur.commit()
+		cur.close()
+		connection.close()
+	except Exception:
+		print(''.join(traceback.format_exc())+" and details = "+details)			
+	return
 
