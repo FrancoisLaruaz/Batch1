@@ -3,7 +3,7 @@
 #Mian program :
 # How to execute it : 
 # work : C:\Users\franc\AppData\Local\Programs\Python\Python37-32\python.exe D:\DEV\Batch1\WebScraper\Main.py "213.157.62.137" "1" "Edreams" "RNS" "TYO" "false" "10/10/2018" "18/10/2018"
-# perso : C:\Users\franc\AppData\Local\Programs\Python\Python37\python.exe C:\DEV\Batch1\WebScraper\Main.py "45.234.68.5:8080 -N-S -" "1" "Edreams" "RNS" "NRT" "false" "10/10/2018" "18/10/2018"
+# perso : C:\Users\franc\AppData\Local\Programs\Python\Python37\python.exe C:\DEV\Batch1\WebScraper\Main.py "137.74.254.242:3128 FR-H +" "1" "Edreams" "RNS" "TYO" "false" "09/10/2018" "20/10/2018"
 # Packages to install (in C:\Users\franc\AppData\Local\Programs\Python\Python37-32) : 
 #==>  python -m pip install pypyodbc
 #==>  python -m pip install selenium

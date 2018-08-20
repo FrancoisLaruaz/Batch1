@@ -130,8 +130,6 @@ def ExtractData(element,url,fromDate,toDate,searchTripProviderId):
 			price=price[1:]
 			print("currency = "+currency)
 			print("price = "+price)
-			print("len(OneWayTrips) = "+str(len(OneWayTrips)))
-			print("len(ReturnTrips) = "+str(len(ReturnTrips)))
 			for OneWayTrip in OneWayTrips :
 				if len(ReturnTrips)>0 :
 					for ReturnTrip in ReturnTrips :
