@@ -1,11 +1,13 @@
 import pypyodbc
 from DBConnection.SQLConnect import *
 from Logger.logger import *
+from datetime import datetime, timezone
 
 def SetTripProviderAsSuccess(searchTripProviderId):
 	returnvalue=0
 	try: 
-		ExecuteQuery("update dbo.SearchTripProvider set SearchSuccess=1 where id="+searchTripProviderId)
+		utcDateNow=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+		ExecuteQuery("update dbo.SearchTripProvider set SearchSuccess=1,EndSearchDate='"+utcDateNow+"'  where id="+searchTripProviderId)
 	except Exception:
 		LogError(traceback,"searchTripProviderId = "+searchTripProviderId)	
 	return 

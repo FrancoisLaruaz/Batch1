@@ -1,2 +1,2 @@
-connection_string ='Driver={SQL Server Native Client 11.0};Server=LAPTOP-F614BEV0;Database=Template;Trusted_Connection=Yes;'
-#connection_string ='Driver={SQL Server Native Client 11.0};Server=.;Database=Template;Trusted_Connection=Yes;'
+#connection_string ='Driver={SQL Server Native Client 11.0};Server=LAPTOP-F614BEV0;Database=Template;Trusted_Connection=Yes;'
+connection_string ='Driver={SQL Server Native Client 11.0};Server=.;Database=Template;Trusted_Connection=Yes;'

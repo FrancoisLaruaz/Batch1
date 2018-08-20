@@ -22,7 +22,7 @@ def LogError(traceback,details=""):
            (0
            ,'ERROR'
            ,'PYTHON ERROR'
-           ,'"""+details.replace("'","''")[:8000]+"','"+error.replace("'","''")[:5000]+"','***Batch***','"+date.replace("'","''")+".000')"
+           ,'"""+details.replace("'","''")[:8000]+"','"+error.replace("'","''")[:5000]+"','*** BATCH ***','"+date.replace("'","''")+".000')"
 		connection = pypyodbc.connect(connection_string)
 		cur = connection.cursor()
 		cur.execute(query)
