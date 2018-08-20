@@ -74,13 +74,15 @@ def waitForWebdriver(browser,css_selectorOK,css_selectorKO=""):
 	
 def getGoogleChromeDriver(fullproxy):
 	try:
+		proxy=fullproxy.split(' ')[0]
+		print("proxy used : "+proxy)
 		option = webdriver.ChromeOptions()
 		option.add_argument("--incognito")
 		prox = Proxy()
 		prox.proxy_type = ProxyType.MANUAL
-		prox.http_proxy = fullproxy
-		prox.socks_proxy = fullproxy
-		prox.ssl_proxy =fullproxy
+		prox.http_proxy = proxy
+		prox.socks_proxy = proxy
+		prox.ssl_proxy =proxy
 
 		capabilities = webdriver.DesiredCapabilities.CHROME
 		prox.add_to_capabilities(capabilities)

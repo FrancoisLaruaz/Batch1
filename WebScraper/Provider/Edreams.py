@@ -15,8 +15,9 @@ from Model.Trip import *
 from Helper.providerHelper import *
 import re
 from DBConnection.trip import *
+from Helper.dateHelper import *
 
-def SearchEdreams(proxy,origin,destination,direct,fromDate,toDate):
+def SearchEdreams(proxy,searchTripProviderId,origin,destination,direct,fromDate,toDate):
 	try:
 		print ("** Begin Edreams **")
 
@@ -26,17 +27,24 @@ def SearchEdreams(proxy,origin,destination,direct,fromDate,toDate):
 		
 		browser=getGoogleChromeDriver(proxy)
 		browser.get(url)
-		waitForWebdriver(browser,".od-resultpage-highlight-title",".dialog_error")		
+		waitForWebdriver(browser,".od-resultpage-highlight-title",".dialog_error")
+	
+		if checkExistsByXpath(browser,"//div[@class='od-ui-dialog dialog dialog_error dialog-undefined od-center-dialogs']") :
+			SetTripProviderAsSuccess(searchTripProviderId)
+			print ("** End Edreams : no resuld founds **\n")
+			return
+		
 		elements = browser.find_elements_by_xpath("//div[@class='result od-resultpage-wrapper    ']")
 		for element in elements:
-			ExtractData(element,url,fromDate,toDate)
+			ExtractData(element,url,fromDate,toDate,searchTripProviderId)
 		elements = browser.find_elements_by_xpath("//div[@class='result od-resultpage-wrapper highlighted odf-box  ']")
 		for element in elements:
-			ExtractData(element,url,fromDate,toDate)		
+			ExtractData(element,url,fromDate,toDate,searchTripProviderId)		
 		browser.quit()
 		print ("** End Edreams **\n")
 	except Exception:
-		LogError(traceback,"proxy = "+proxy+" and origin = "+origin+" and destination = "+destination+" and fromDate = "+fromDate+" and toDate = "+toDate+" and direct = "+direct)
+		LogError(traceback,"proxy = "+proxy+" and searchTripProviderId = "+searchTripProviderId+" and origin = "+origin+" and destination = "+destination+" and fromDate = "+fromDate+" and toDate = "+toDate+" and direct = "+direct)
+		browser.quit()
 	return
 
 def GetDateForUrl(date):
@@ -47,7 +55,7 @@ def GetDateForUrl(date):
 		LogError(traceback,"date = "+date)
 	return	result
 	
-def ExtractData(element,url,fromDate,toDate):
+def ExtractData(element,url,fromDate,toDate,searchTripProviderId):
 	try:
 		print("*** Begin study element ***")
 		text=element.text				
@@ -69,8 +77,20 @@ def ExtractData(element,url,fromDate,toDate):
 					rightDiv=flight.find_element_by_xpath(".//div[@class='odf-row-fluid odf-text-left odf-text-sm od-secondary-flight-info-time-stops-wrapper']")
 					time=flight.find_element_by_xpath(".//div[@class='odf-row odf-h3']").text.replace(" ", "");
 					print("time = "+time)
-					
-					departureTime=fromDate+' '+time.split('-')[0]
+					hours=time.split('-')[0]
+					if wayId=="1":
+						baseDate=fromDate
+					elif wayId=="2":
+						baseDate=toDate
+					if len(hours.split('+'))==2:
+						departureTime=addDay(baseDate,hours.split('+')[1][0:1])+' '+hours.split('+')[0]
+					else:
+						departureTime=baseDate+' '+hours
+					hours=time.split('-')[1]	
+					if len(hours.split('+'))==2:						
+						arrivalTime=addDay(baseDate,hours.split('+')[1][0:1])+' '+hours.split('+')[0]
+					else:
+						arrivalTime=baseDate+' '+hours
 					print("departureTime = "+departureTime)
 					print("arrivalTime = "+arrivalTime)
 					duration=getDurationMinute(rightDiv.find_element_by_xpath(".//span[@class='odf-text-nowrap']").text);
@@ -106,19 +126,22 @@ def ExtractData(element,url,fromDate,toDate):
 					elif wayId=="2":
 						ReturnTrips.append(trip)				
 			price=element.find_element_by_xpath(".//div[@class='od-price-container  ']").text.replace(" ", "").replace("*", "");
+			currency=price[0:1]
+			price=price[1:]
+			print("currency = "+currency)
 			print("price = "+price)
 			print("len(OneWayTrips) = "+str(len(OneWayTrips)))
 			print("len(ReturnTrips) = "+str(len(ReturnTrips)))
 			for OneWayTrip in OneWayTrips :
 				if len(ReturnTrips)>0 :
 					for ReturnTrip in ReturnTrips :
-						InsertTrip("Edreams",fromDate,toDate,price,url,OneWayTrip,ReturnTrip)
+						InsertTrip(searchTripProviderId,price,currency,url,OneWayTrip,ReturnTrip)
 		else:
 			print("Train spotted")
 
 		print("*** End study element ***\n")
 	except Exception:
-		LogError(traceback,"url = "+url+" and element = "+element.text+" and fromDate = "+fromDate+" and toDate = "+toDate)
+		LogError(traceback,"url = "+url+" and element = "+element.text+" and fromDate = "+fromDate+" and toDate = "+toDate+" and searchTripProviderId = "+searchTripProviderId)
 	return
 	
 	

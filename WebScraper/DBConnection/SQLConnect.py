@@ -25,11 +25,12 @@ def CallStoredProc(procName, *args):
 		DECLARE @ret int
 		EXEC  @ret = %s %s
 		SELECT @ret""" % (procName, ','.join(['?'] * len(args)))
+		#print("execute "+procName+" '"+"','".join(str(e) for e in args)+"'")
 		returnvalue=int(cur.execute(sql, args).fetchone()[0])
 		cur.commit()
 		cur.close()
 		connection.close()
 		print(procName+" executed | returnvalue = "+str(returnvalue))
 	except Exception:	
-		LogError(traceback,"procName = "+procName+" and args = "+''.join(str(e) for e in args))	
+		LogError(traceback,"procName = "+procName+" and args = "+','.join(str(e) for e in args))	
 	return returnvalue
