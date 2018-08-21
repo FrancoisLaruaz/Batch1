@@ -99,6 +99,7 @@
     <Compile Include="FlighsAPI\Kiwi.cs" />
     <Compile Include="FlighsAPI\AirFranceKLM.cs" />
     <Compile Include="FlighsAPI\Transavia.cs" />
+    <Compile Include="FlightsBot\PythonHelper.cs" />
     <Compile Include="FlightsBot\Test.cs" />
     <Compile Include="FlightsBot\Kayak.cs" />
     <Compile Include="Models\AirFranceKLM\RequestBody.cs" />

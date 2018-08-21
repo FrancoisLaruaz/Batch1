@@ -2,7 +2,7 @@
 
 #Mian program :
 # How to execute it : 
-# work : C:\Users\franc\AppData\Local\Programs\Python\Python37-32\python.exe D:\DEV\Batch1\WebScraper\Main.py "213.157.62.137" "1" "Edreams" "RNS" "TYO" "false" "10/10/2018" "18/10/2018"
+# work : C:\Users\franc\AppData\Local\Programs\Python\Python37-32\python.exe D:\DEV\Batch1\WebScraper\Main.py "213.192.33.229:21776 CZ-H-S + " "1" "Edreams" "RNS" "TYO" "false" "10/10/2018" "18/10/2018"
 # perso : C:\Users\franc\AppData\Local\Programs\Python\Python37\python.exe C:\DEV\Batch1\WebScraper\Main.py "137.74.254.242:3128 FR-H +" "1" "Edreams" "RNS" "TYO" "false" "09/10/2018" "20/10/2018"
 # Packages to install (in C:\Users\franc\AppData\Local\Programs\Python\Python37-32) : 
 #==>  python -m pip install pypyodbc
@@ -26,6 +26,7 @@ try:
 	print("\n*** Start Web Scraper *** : " +datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]+"\n")
 	if len(sys.argv) < 7 or  len(sys.argv) > 9:
 		print("Arguments missing")
+		
 	proxy=sys.argv[1]
 	searchTripProviderId=sys.argv[2]
 	provider=sys.argv[3]
@@ -42,6 +43,6 @@ try:
 		SearchEdreams(proxy,searchTripProviderId,origin,destination,direct,fromDate,toDate)		
 	
 except Exception:
-	LogError(traceback)
+	LogError(traceback,"args = "+','.join(str(e) for e in sys.argv))
 print("*** End Web Scraper *** : " +datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
-os.system("pause")
+#os.system("pause")

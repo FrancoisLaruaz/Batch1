@@ -23,7 +23,7 @@ namespace FlightsEngine
                 filter1.ToDate = new DateTime(2018, 10, 28);
                 filter1.AdultsNumber = 1;
                 filter1.DirectFlightsOnly = true;
-                FlighsBot.Test.run();
+                FlighsBot.PythonHelper.run();
              //   FlighsBot.Kayak.SearchFlights(filter1);
                 //   FlighsBot.Kayak.SearchFlights(filter1);
 
