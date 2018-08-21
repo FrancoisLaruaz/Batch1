@@ -18,6 +18,7 @@ from DBConnection.trip import *
 from Helper.dateHelper import *
 
 def SearchEdreams(proxy,searchTripProviderId,origin,destination,direct,fromDate,toDate):
+	result="KO|"
 	try:
 		print ("** Begin Edreams **")
 
@@ -27,25 +28,30 @@ def SearchEdreams(proxy,searchTripProviderId,origin,destination,direct,fromDate,
 		
 		browser=getGoogleChromeDriver(proxy)
 		browser.get(url)
-		waitForWebdriver(browser,".od-resultpage-highlight-title",".dialog_error")
-	
-		if checkExistsByXpath(browser,"//div[@class='od-ui-dialog dialog dialog_error dialog-undefined od-center-dialogs']") :
-			SetTripProviderAsSuccess(searchTripProviderId)
-			print ("** End Edreams : no resuld founds **\n")
-			return
+		result=waitForWebdriver(searchTripProviderId,browser,".od-resultpage-highlight-title",".dialog_error")
 		
-		elements = browser.find_elements_by_xpath("//div[@class='result od-resultpage-wrapper    ']")
-		for element in elements:
-			ExtractData(element,url,fromDate,toDate,searchTripProviderId)
-		elements = browser.find_elements_by_xpath("//div[@class='result od-resultpage-wrapper highlighted odf-box  ']")
-		for element in elements:
-			ExtractData(element,url,fromDate,toDate,searchTripProviderId)		
+		if result=="OK":	
+			if checkExistsByXpath(browser,"//div[@class='od-ui-dialog dialog dialog_error dialog-undefined od-center-dialogs']") :
+				SetTripProviderAsSuccess(searchTripProviderId)
+				result="OK"
+				print ("** End Edreams : no resuld founds **\n")
+				browser.quit()
+				return result
+			
+			elements = browser.find_elements_by_xpath("//div[@class='result od-resultpage-wrapper    ']")
+			for element in elements:
+				ExtractData(element,url,fromDate,toDate,searchTripProviderId)
+			elements = browser.find_elements_by_xpath("//div[@class='result od-resultpage-wrapper highlighted odf-box  ']")
+			for element in elements:
+				ExtractData(element,url,fromDate,toDate,searchTripProviderId)		
+			result="OK"
 		browser.quit()
 		print ("** End Edreams **\n")
 	except Exception:
+		result="KO|"+''.join(traceback.format_exc())	
 		LogError(traceback,"proxy = "+proxy+" and searchTripProviderId = "+searchTripProviderId+" and origin = "+origin+" and destination = "+destination+" and fromDate = "+fromDate+" and toDate = "+toDate+" and direct = "+direct)
 		browser.quit()
-	return
+	return result
 
 def GetDateForUrl(date):
 	result=""
@@ -99,18 +105,18 @@ def ExtractData(element,url,fromDate,toDate,searchTripProviderId):
 						stopNumber=rightDiv.find_element_by_xpath(".//span[@class='odf-text-nowrap number_stop ']").text.split(' ')[0];
 						print("stop Number = "+stopNumber)
 					else :
-						stopNumber=0;
+						stopNumber="0";
 						print("stop Number = "+stopNumber)
+					airline="*Unkwown*";
+					airlineSrc=""					
 					if checkExistsByXpath(flight,".//img[@class='od-resultpage-segment-itinerary-title-carrier-logo od-primary-description-carrier-icon']"):
 						airlineLogo=flight.find_element_by_xpath(".//img[@class='od-resultpage-segment-itinerary-title-carrier-logo od-primary-description-carrier-icon']");
 						airlineSrc=airlineLogo.get_attribute("src");
 						airline=airlineLogo.get_attribute("alt");
 					else :
-						airlineSrc=""
 						if checkExistsByXpath(flight,".//div[@class='odf-grid-col odf-col-span1 odf-tooltip-container odf-text-mono-color-03 hover-active-tooltip od-primary-info-airline ficon-condensed']"):
 							airline="*Multiples*";
-						else :
-							airline="*Unkwown*";
+
 					print("airline = "+airline)
 					print("airlineSrc = "+airlineSrc)
 						

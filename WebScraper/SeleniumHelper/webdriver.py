@@ -57,8 +57,9 @@ def getFirefoxDriver(host,port):
 		LogError(traceback,"host = "+host+" and port = "+port)
 	return getGoogleChromeDriver(host+":"+port)
 	
-def waitForWebdriver(browser,css_selectorOK,css_selectorKO=""):
+def waitForWebdriver(searchTripProviderId,browser,css_selectorOK,css_selectorKO=""):
 	delay = 60 # seconds
+	result="KO|"
 	try:
 		if css_selectorKO!="":
 			css_selector=css_selectorOK+", "+css_selectorKO
@@ -67,10 +68,12 @@ def waitForWebdriver(browser,css_selectorOK,css_selectorKO=""):
 		print("begin wait for "+css_selector+" : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
 		wait = WebDriverWait(browser, delay)		
 		wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
+		result="OK"
 		print("end wait : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])	
 	except Exception:
-		LogError(traceback,"css_selectorOK = "+css_selectorOK+" and css_selectorKO = "+css_selectorKO)
-	return			
+		result="KO|waitForWebdriver"
+		LogError(traceback,"searchTripProviderId ="+searchTripProviderId+" and css_selectorOK = "+css_selectorOK+" and css_selectorKO = "+css_selectorKO)
+	return result			
 	
 def getGoogleChromeDriver(fullproxy):
 	try:

@@ -10,7 +10,7 @@ namespace FlightsEngine
 {
     public static class Program
     {
-        public static  bool SearchFlights()
+        public static  bool SearchFlights(string MainPythonScriptPath,string PythonPath)
         {
             bool result = false;
             try
@@ -23,8 +23,20 @@ namespace FlightsEngine
                 filter1.ToDate = new DateTime(2018, 10, 28);
                 filter1.AdultsNumber = 1;
                 filter1.DirectFlightsOnly = true;
-                FlighsBot.PythonHelper.run();
-             //   FlighsBot.Kayak.SearchFlights(filter1);
+
+                string Proxy = "185.188.191.247:21776 SK-H-S +";
+                ScrappingSearch scrappingSearch = new ScrappingSearch();
+                scrappingSearch.Proxy = Proxy;
+                scrappingSearch.PythonPath = PythonPath;
+                scrappingSearch.MainPythonScriptPath = MainPythonScriptPath;
+                scrappingSearch.SearchTripProviderId = 1;
+                scrappingSearch.Provider = "Edreams";
+
+                Task.Factory.StartNew(() =>  FlighsBot.PythonHelper.Run(filter1, scrappingSearch));
+                Task.Factory.StartNew(() => FlighsBot.PythonHelper.Run(filter1, scrappingSearch));
+                // Console.WriteLine("Pythonresult = "+ Pythonresult.Success+" and Error = "+ (Pythonresult.Error??""));
+
+                //   FlighsBot.Kayak.SearchFlights(filter1);
                 //   FlighsBot.Kayak.SearchFlights(filter1);
 
                 //   FlightsEngine.FlighsAPI.AirFranceKLM.SearchFlights(filter1);
@@ -38,6 +50,11 @@ namespace FlightsEngine
                 FlightsEngine.Utils.Logger.GenerateError(e, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             }
             return result;
+        }
+
+        public static void SearchFlights(object p1, object p2, object p3)
+        {
+            throw new NotImplementedException();
         }
     }
 }

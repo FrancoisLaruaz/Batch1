@@ -13,6 +13,7 @@ namespace FlightsEngine.Models
 
         }
 
+
         public string FromAirportCode { get; set; }
 
         public string ToAirportCode { get; set; }

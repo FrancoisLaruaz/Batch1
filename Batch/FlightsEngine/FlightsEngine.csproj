@@ -104,6 +104,8 @@
     <Compile Include="FlightsBot\Kayak.cs" />
     <Compile Include="Models\AirFranceKLM\RequestBody.cs" />
     <Compile Include="Models\AirHob\RequestBody.cs" />
+    <Compile Include="Models\ScrappingSearch.cs" />
+    <Compile Include="Models\PythonExecutionResult.cs" />
     <Compile Include="Models\AirlineSearch.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,33 +6,38 @@ using System.Windows.Forms;
 using Microsoft.Scripting.Hosting;
 using System.Diagnostics;
 using System.IO;
+using FlightsEngine.Models;
 
 namespace FlightsEngine.FlighsBot
 {
     public static class PythonHelper
     {
-        public static void run()
+        public static PythonExecutionResult Run(AirlineSearch filter, ScrappingSearch scrappingSearch)
         {
+            PythonExecutionResult result = new PythonExecutionResult();
             System.Diagnostics.Process cmd = new System.Diagnostics.Process();
             try
             {
                 // https://stackoverflow.com/questions/1469764/run-command-prompt-commands
 
-                string cmdPath = @"D:\DEV\Batch1\WebScraper\Main.py";
-                string pythonExe= @"C:\Users\franc\AppData\Local\Programs\Python\Python37-32\python.exe";
-                string args= "\"213.192.33.229:21776 CZ-H-S + \" \"1\" \"Edreams\" \"RNS\" \"TYO\" \"false\" \"10/10/2018\" \"18/10/2018\"";
+
+                string args = "\""+ scrappingSearch.Proxy + "\" \""+ scrappingSearch.SearchTripProviderId + "\" \"" + scrappingSearch.Provider + "\" \""+ filter.FromAirportCode + "\" \"" + filter.ToAirportCode + "\" \"" + filter.DirectFlightsOnly.ToString().ToLower() + "\" \""+filter.FromDate.Value.ToString("dd'/'MM'/'yyyy") +"\"";
+                if(filter.ToDate!=null)
+                {
+                    args=args + " \"" + filter.ToDate.Value.ToString("dd'/'MM'/'yyyy") + "\"";
+                }
 
                 Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  START Python Helper ***");
 
                 System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
                 startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
                 startInfo.FileName = "cmd.exe";
-                startInfo.Arguments = string.Format("/C {0} {1} {2}", pythonExe, cmdPath, args);
+                startInfo.Arguments = string.Format("/C {0} {1} {2}", scrappingSearch.PythonPath, scrappingSearch.MainPythonScriptPath, args);
 
-                cmd.StartInfo.RedirectStandardInput = true;
-                cmd.StartInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardInput = true;
+                startInfo.RedirectStandardOutput = true;
                 cmd.StartInfo.CreateNoWindow = false;
-                cmd.StartInfo.UseShellExecute = false;;
+                startInfo.UseShellExecute = false; ;
                 /*
                 start.UseShellExecute = false;// Do not use OS shell
                 start.CreateNoWindow = true; // We don't need new window
@@ -41,23 +46,42 @@ namespace FlightsEngine.FlighsBot
                 */
                 cmd.StartInfo = startInfo;
                 cmd.Start();
+                string strResult = "";
+                while (!cmd.StandardOutput.EndOfStream)
+                {
+                    strResult = cmd.StandardOutput.ReadLine();
+                }
 
-              //  cmd.StandardInput.WriteLine("echo Oscar");
-              //  cmd.StandardInput.Flush();
-              //  cmd.StandardInput.Close();
-             //   cmd.WaitForExit();
-                Console.WriteLine(cmd.StandardOutput.ReadToEnd());
+                if (!String.IsNullOrWhiteSpace(strResult))
+                {
+                    if (strResult.StartsWith("OK"))
+                    {
+                        result.Success = true;
+                    }
+                    else
+                    {
+                        if (strResult.Contains("|"))
+                        {
+                            result.Error = strResult.Split('|')[1];
+                        }
+                    }
+                }
 
                 Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  END Python Helper ***");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                FlightsEngine.Utils.Logger.GenerateError(e, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, null);
+                result.Success = false;
+                result.Error = e.ToString();
+                FlightsEngine.Utils.Logger.GenerateError(e, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, "Provider = " + scrappingSearch.Provider + " and Proxy = " + scrappingSearch.Proxy + " and filters = "+filter.ToSpecialString());
             }
             finally
             {
+                cmd.StandardInput.WriteLine("exit");
+                cmd.WaitForExit();
                 cmd.Close();
             }
+            return result;
         }
 
     }
