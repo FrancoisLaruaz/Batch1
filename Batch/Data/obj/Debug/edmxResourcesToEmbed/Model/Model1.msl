@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="TemplateEntities">
+  <EntityContainerMapping StorageEntityContainer="TemplateModelStoreContainer" CdmEntityContainer="TemplateEntities1">
     <EntitySetMapping Name="Addresses">
-      <EntityTypeMapping TypeName="Model.Address">
+      <EntityTypeMapping TypeName="TemplateModel.Address">
         <MappingFragment StoreEntitySet="Address">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
@@ -19,7 +19,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Airlines">
-      <EntityTypeMapping TypeName="Model.Airline">
+      <EntityTypeMapping TypeName="TemplateModel.Airline">
         <MappingFragment StoreEntitySet="Airline">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -29,7 +29,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Airports">
-      <EntityTypeMapping TypeName="Model.Airport">
+      <EntityTypeMapping TypeName="TemplateModel.Airport">
         <MappingFragment StoreEntitySet="Airport">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -37,11 +37,12 @@
           <ScalarProperty Name="Latitude" ColumnName="Latitude" />
           <ScalarProperty Name="Longitude" ColumnName="Longitude" />
           <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="BusyAirport" ColumnName="BusyAirport" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="AspNetRoles">
-      <EntityTypeMapping TypeName="Model.AspNetRole">
+      <EntityTypeMapping TypeName="TemplateModel.AspNetRole">
         <MappingFragment StoreEntitySet="AspNetRoles">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -49,7 +50,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="AspNetUserClaims">
-      <EntityTypeMapping TypeName="Model.AspNetUserClaim">
+      <EntityTypeMapping TypeName="TemplateModel.AspNetUserClaim">
         <MappingFragment StoreEntitySet="AspNetUserClaims">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
@@ -59,7 +60,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="AspNetUserLogins">
-      <EntityTypeMapping TypeName="Model.AspNetUserLogin">
+      <EntityTypeMapping TypeName="TemplateModel.AspNetUserLogin">
         <MappingFragment StoreEntitySet="AspNetUserLogins">
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
@@ -68,7 +69,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="AspNetUsers">
-      <EntityTypeMapping TypeName="Model.AspNetUser">
+      <EntityTypeMapping TypeName="TemplateModel.AspNetUser">
         <MappingFragment StoreEntitySet="AspNetUsers">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -86,7 +87,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Categories">
-      <EntityTypeMapping TypeName="Model.Category">
+      <EntityTypeMapping TypeName="TemplateModel.Category">
         <MappingFragment StoreEntitySet="Category">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -101,7 +102,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="CategoryTypes">
-      <EntityTypeMapping TypeName="Model.CategoryType">
+      <EntityTypeMapping TypeName="TemplateModel.CategoryType">
         <MappingFragment StoreEntitySet="CategoryType">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -109,7 +110,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Cities">
-      <EntityTypeMapping TypeName="Model.City">
+      <EntityTypeMapping TypeName="TemplateModel.City">
         <MappingFragment StoreEntitySet="City">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -120,7 +121,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Countries">
-      <EntityTypeMapping TypeName="Model.Country">
+      <EntityTypeMapping TypeName="TemplateModel.Country">
         <MappingFragment StoreEntitySet="Country">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -129,16 +130,18 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Currencies">
-      <EntityTypeMapping TypeName="Model.Currency">
+      <EntityTypeMapping TypeName="TemplateModel.Currency">
         <MappingFragment StoreEntitySet="Currency">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Symbol" ColumnName="Symbol" />
+          <ScalarProperty Name="EuroConversationRate" ColumnName="EuroConversationRate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="EmailAudits">
-      <EntityTypeMapping TypeName="Model.EmailAudit">
+      <EntityTypeMapping TypeName="TemplateModel.EmailAudit">
         <MappingFragment StoreEntitySet="EmailAudit">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -154,7 +157,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="EmailTypeLanguages">
-      <EntityTypeMapping TypeName="Model.EmailTypeLanguage">
+      <EntityTypeMapping TypeName="TemplateModel.EmailTypeLanguage">
         <MappingFragment StoreEntitySet="EmailTypeLanguage">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="EMailTypeId" ColumnName="EMailTypeId" />
@@ -165,23 +168,24 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Flights">
-      <EntityTypeMapping TypeName="Model.Flight">
+      <EntityTypeMapping TypeName="TemplateModel.Flight">
         <MappingFragment StoreEntitySet="Flight">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
-          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
           <ScalarProperty Name="FromAirportId" ColumnName="FromAirportId" />
           <ScalarProperty Name="ToAirportId" ColumnName="ToAirportId" />
           <ScalarProperty Name="DepartureDate" ColumnName="DepartureDate" />
           <ScalarProperty Name="ArrivalDate" ColumnName="ArrivalDate" />
           <ScalarProperty Name="AirlineId" ColumnName="AirlineId" />
-          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
-          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="StopNumber" ColumnName="StopNumber" />
+          <ScalarProperty Name="TripId" ColumnName="TripId" />
+          <ScalarProperty Name="FlightTypeId" ColumnName="FlightTypeId" />
+          <ScalarProperty Name="Duration" ColumnName="Duration" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Log4Net">
-      <EntityTypeMapping TypeName="Model.Log4Net">
+      <EntityTypeMapping TypeName="TemplateModel.Log4Net">
         <MappingFragment StoreEntitySet="Log4Net">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Date" ColumnName="Date" />
@@ -195,7 +199,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="News">
-      <EntityTypeMapping TypeName="Model.News">
+      <EntityTypeMapping TypeName="TemplateModel.News">
         <MappingFragment StoreEntitySet="News">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="PublishDate" ColumnName="PublishDate" />
@@ -212,7 +216,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Products">
-      <EntityTypeMapping TypeName="Model.Product">
+      <EntityTypeMapping TypeName="TemplateModel.Product">
         <MappingFragment StoreEntitySet="Product">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
@@ -229,7 +233,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ProductSubTypes">
-      <EntityTypeMapping TypeName="Model.ProductSubType">
+      <EntityTypeMapping TypeName="TemplateModel.ProductSubType">
         <MappingFragment StoreEntitySet="ProductSubType">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -239,7 +243,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ProductTypes">
-      <EntityTypeMapping TypeName="Model.ProductType">
+      <EntityTypeMapping TypeName="TemplateModel.ProductType">
         <MappingFragment StoreEntitySet="ProductType">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -248,16 +252,18 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Providers">
-      <EntityTypeMapping TypeName="Model.Provider">
+      <EntityTypeMapping TypeName="TemplateModel.Provider">
         <MappingFragment StoreEntitySet="Provider">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="ImageSrc" ColumnName="ImageSrc" />
+          <ScalarProperty Name="HasAPI" ColumnName="HasAPI" />
+          <ScalarProperty Name="IsSearchEngine" ColumnName="IsSearchEngine" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Provinces">
-      <EntityTypeMapping TypeName="Model.Province">
+      <EntityTypeMapping TypeName="TemplateModel.Province">
         <MappingFragment StoreEntitySet="Province">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -266,7 +272,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ScheduledTasks">
-      <EntityTypeMapping TypeName="Model.ScheduledTask">
+      <EntityTypeMapping TypeName="TemplateModel.ScheduledTask">
         <MappingFragment StoreEntitySet="ScheduledTask">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CallbackId" ColumnName="CallbackId" />
@@ -282,7 +288,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="SearchResults">
-      <EntityTypeMapping TypeName="Model.SearchResult">
+      <EntityTypeMapping TypeName="TemplateModel.SearchResult">
         <MappingFragment StoreEntitySet="SearchResult">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
@@ -294,8 +300,36 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="SearchTrips">
+      <EntityTypeMapping TypeName="TemplateModel.SearchTrip">
+        <MappingFragment StoreEntitySet="SearchTrip">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="FromAirportId" ColumnName="FromAirportId" />
+          <ScalarProperty Name="ToAirportId" ColumnName="ToAirportId" />
+          <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+          <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+          <ScalarProperty Name="FromCityId" ColumnName="FromCityId" />
+          <ScalarProperty Name="ToCityId" ColumnName="ToCityId" />
+          <ScalarProperty Name="DirectFlightsOnly" ColumnName="DirectFlightsOnly" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SearchTripProviders">
+      <EntityTypeMapping TypeName="TemplateModel.SearchTripProvider">
+        <MappingFragment StoreEntitySet="SearchTripProvider">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+          <ScalarProperty Name="SearchTripId" ColumnName="SearchTripId" />
+          <ScalarProperty Name="Proxy" ColumnName="Proxy" />
+          <ScalarProperty Name="SearchSuccess" ColumnName="SearchSuccess" />
+          <ScalarProperty Name="EndSearchDate" ColumnName="EndSearchDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="SocialMediaConnections">
-      <EntityTypeMapping TypeName="Model.SocialMediaConnection">
+      <EntityTypeMapping TypeName="TemplateModel.SocialMediaConnection">
         <MappingFragment StoreEntitySet="SocialMediaConnection">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ProviderKeyUserSignedUp" ColumnName="ProviderKeyUserSignedUp" />
@@ -305,7 +339,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="SubProvinces">
-      <EntityTypeMapping TypeName="Model.SubProvince">
+      <EntityTypeMapping TypeName="TemplateModel.SubProvince">
         <MappingFragment StoreEntitySet="SubProvince">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -314,7 +348,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="Model.sysdiagram">
+      <EntityTypeMapping TypeName="TemplateModel.sysdiagram">
         <MappingFragment StoreEntitySet="sysdiagrams">
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -325,7 +359,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="TaskLogs">
-      <EntityTypeMapping TypeName="Model.TaskLog">
+      <EntityTypeMapping TypeName="TemplateModel.TaskLog">
         <MappingFragment StoreEntitySet="TaskLog">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="StartDate" ColumnName="StartDate" />
@@ -338,25 +372,19 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Trips">
-      <EntityTypeMapping TypeName="Model.Trip">
+      <EntityTypeMapping TypeName="TemplateModel.Trip">
         <MappingFragment StoreEntitySet="Trip">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
-          <ScalarProperty Name="FromAirportId" ColumnName="FromAirportId" />
-          <ScalarProperty Name="ToAirportId" ColumnName="ToAirportId" />
-          <ScalarProperty Name="DepartureDate" ColumnName="DepartureDate" />
-          <ScalarProperty Name="ArrivalDate" ColumnName="ArrivalDate" />
-          <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
           <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
           <ScalarProperty Name="Price" ColumnName="Price" />
           <ScalarProperty Name="Url" ColumnName="Url" />
-          <ScalarProperty Name="FromCityId" ColumnName="FromCityId" />
-          <ScalarProperty Name="ToCityId" ColumnName="ToCityId" />
+          <ScalarProperty Name="SearchTripProviderId" ColumnName="SearchTripProviderId" />
+          <ScalarProperty Name="EuroPrice" ColumnName="EuroPrice" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Users">
-      <EntityTypeMapping TypeName="Model.User">
+      <EntityTypeMapping TypeName="TemplateModel.User">
         <MappingFragment StoreEntitySet="User">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -383,7 +411,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="UserFollows">
-      <EntityTypeMapping TypeName="Model.UserFollow">
+      <EntityTypeMapping TypeName="TemplateModel.UserFollow">
         <MappingFragment StoreEntitySet="UserFollow">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -393,14 +421,14 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ValidTopLevelDomains">
-      <EntityTypeMapping TypeName="Model.ValidTopLevelDomain">
+      <EntityTypeMapping TypeName="TemplateModel.ValidTopLevelDomain">
         <MappingFragment StoreEntitySet="ValidTopLevelDomain">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="AspNetUserRoles" TypeName="Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+    <AssociationSetMapping Name="AspNetUserRoles" TypeName="TemplateModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
       <EndProperty Name="AspNetRoles">
         <ScalarProperty Name="Id" ColumnName="RoleId" />
       </EndProperty>
@@ -408,33 +436,36 @@
         <ScalarProperty Name="Id" ColumnName="UserId" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="FlightTrip" TypeName="Model.FlightTrip" StoreEntitySet="FlightTrip">
-      <EndProperty Name="Flight">
-        <ScalarProperty Name="Id" ColumnName="FlightId" />
+    <AssociationSetMapping Name="ProviderCountry" TypeName="TemplateModel.ProviderCountry" StoreEntitySet="ProviderCountry">
+      <EndProperty Name="Country">
+        <ScalarProperty Name="Id" ColumnName="CountryId" />
       </EndProperty>
-      <EndProperty Name="Trip">
-        <ScalarProperty Name="Id" ColumnName="TripId" />
+      <EndProperty Name="Provider">
+        <ScalarProperty Name="Id" ColumnName="ProviderId" />
       </EndProperty>
     </AssociationSetMapping>
-    <FunctionImportMapping FunctionImportName="DeleteNewsById" FunctionName="Model.Store.DeleteNewsById" />
-    <FunctionImportMapping FunctionImportName="DeleteProductById_NoTransaction" FunctionName="Model.Store.DeleteProductById_NoTransaction" />
-    <FunctionImportMapping FunctionImportName="DeleteProductById_WithTransaction" FunctionName="Model.Store.DeleteProductById_WithTransaction" />
-    <FunctionImportMapping FunctionImportName="DeleteScheduledTaskById" FunctionName="Model.Store.DeleteScheduledTaskById" />
-    <FunctionImportMapping FunctionImportName="DeleteUserById" FunctionName="Model.Store.DeleteUserById" />
-    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Model.Store.sp_alterdiagram" />
-    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Model.Store.sp_creatediagram" />
-    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Model.Store.sp_dropdiagram" />
-    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="Model.Store.sp_helpdiagramdefinition">
+    <FunctionImportMapping FunctionImportName="DeleteNewsById" FunctionName="TemplateModel.Store.DeleteNewsById" />
+    <FunctionImportMapping FunctionImportName="DeleteProductById_NoTransaction" FunctionName="TemplateModel.Store.DeleteProductById_NoTransaction" />
+    <FunctionImportMapping FunctionImportName="DeleteProductById_WithTransaction" FunctionName="TemplateModel.Store.DeleteProductById_WithTransaction" />
+    <FunctionImportMapping FunctionImportName="DeleteScheduledTaskById" FunctionName="TemplateModel.Store.DeleteScheduledTaskById" />
+    <FunctionImportMapping FunctionImportName="DeleteUserById" FunctionName="TemplateModel.Store.DeleteUserById" />
+    <FunctionImportMapping FunctionImportName="InsertInfo" FunctionName="TemplateModel.Store.InsertInfo" />
+    <FunctionImportMapping FunctionImportName="InsertLog" FunctionName="TemplateModel.Store.InsertLog" />
+    <FunctionImportMapping FunctionImportName="InsertTripWithTransaction" FunctionName="TemplateModel.Store.InsertTripWithTransaction" />
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="TemplateModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="TemplateModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="TemplateModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="TemplateModel.Store.sp_helpdiagramdefinition">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="Model.sp_helpdiagramdefinition_Result">
+        <ComplexTypeMapping TypeName="TemplateModel.sp_helpdiagramdefinition_Result">
           <ScalarProperty Name="version" ColumnName="version" />
           <ScalarProperty Name="definition" ColumnName="definition" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="Model.Store.sp_helpdiagrams">
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="TemplateModel.Store.sp_helpdiagrams">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="Model.sp_helpdiagrams_Result">
+        <ComplexTypeMapping TypeName="TemplateModel.sp_helpdiagrams_Result">
           <ScalarProperty Name="Database" ColumnName="Database" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -443,7 +474,7 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Model.Store.sp_renamediagram" />
-    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Model.Store.sp_upgraddiagrams" />
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TemplateModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TemplateModel.Store.sp_upgraddiagrams" />
   </EntityContainerMapping>
 </Mapping>

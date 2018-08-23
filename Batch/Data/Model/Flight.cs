@@ -14,28 +14,22 @@ namespace Data.Model
     
     public partial class Flight
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Flight()
-        {
-            this.Trips = new HashSet<Trip>();
-        }
-    
         public int Id { get; set; }
-        public System.DateTime CreationDate { get; set; }
-        public string Number { get; set; }
+        public string FlightNumber { get; set; }
         public int FromAirportId { get; set; }
         public int ToAirportId { get; set; }
         public System.DateTime DepartureDate { get; set; }
         public System.DateTime ArrivalDate { get; set; }
         public int AirlineId { get; set; }
-        public Nullable<int> CurrencyId { get; set; }
-        public Nullable<decimal> Price { get; set; }
+        public Nullable<int> StopNumber { get; set; }
+        public int TripId { get; set; }
+        public int FlightTypeId { get; set; }
+        public int Duration { get; set; }
     
         public virtual Airline Airline { get; set; }
         public virtual Airport Airport { get; set; }
         public virtual Airport Airport1 { get; set; }
-        public virtual Currency Currency { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Trip> Trips { get; set; }
+        public virtual Category Category { get; set; }
+        public virtual Trip Trip { get; set; }
     }
 }

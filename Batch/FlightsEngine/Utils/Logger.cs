@@ -96,6 +96,7 @@ namespace FlightsEngine.Utils
 
                 LoggeError = Logger.LoggeError(Ex?.Message);
 
+
                 if (LoggeError)
                 {
 
@@ -105,7 +106,7 @@ namespace FlightsEngine.Utils
                     Message = "- Message => " + Ex?.Message + " </br></br>" + Message;
                     logger.Error(Message, Ex);
                 }
-
+                Console.WriteLine(Ex.ToString() + " " + (Details ?? ""));
             }
             catch (Exception ex2)
             {

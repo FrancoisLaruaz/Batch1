@@ -7,6 +7,8 @@ using Microsoft.Scripting.Hosting;
 using System.Diagnostics;
 using System.IO;
 using FlightsEngine.Models;
+using System.Collections.Generic;
+using FlightsEngine.Utils;
 
 namespace FlightsEngine.FlighsBot
 {
@@ -14,6 +16,7 @@ namespace FlightsEngine.FlighsBot
     {
         public static PythonExecutionResult Run(AirlineSearch filter, ScrappingSearch scrappingSearch)
         {
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  START Python Helper ***");
             PythonExecutionResult result = new PythonExecutionResult();
             System.Diagnostics.Process cmd = new System.Diagnostics.Process();
             try
@@ -22,12 +25,11 @@ namespace FlightsEngine.FlighsBot
 
 
                 string args = "\""+ scrappingSearch.Proxy + "\" \""+ scrappingSearch.SearchTripProviderId + "\" \"" + scrappingSearch.Provider + "\" \""+ filter.FromAirportCode + "\" \"" + filter.ToAirportCode + "\" \"" + filter.DirectFlightsOnly.ToString().ToLower() + "\" \""+filter.FromDate.Value.ToString("dd'/'MM'/'yyyy") +"\"";
-                if(filter.ToDate!=null)
+                if(filter.Return)
                 {
                     args=args + " \"" + filter.ToDate.Value.ToString("dd'/'MM'/'yyyy") + "\"";
                 }
 
-                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  START Python Helper ***");
 
                 System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
                 startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
@@ -47,9 +49,11 @@ namespace FlightsEngine.FlighsBot
                 cmd.StartInfo = startInfo;
                 cmd.Start();
                 string strResult = "";
+                List<string> resultList = new List<string>();
                 while (!cmd.StandardOutput.EndOfStream)
                 {
                     strResult = cmd.StandardOutput.ReadLine();
+                    resultList.Add(strResult);
                 }
 
                 if (!String.IsNullOrWhiteSpace(strResult))
@@ -60,14 +64,20 @@ namespace FlightsEngine.FlighsBot
                     }
                     else
                     {
+
                         if (strResult.Contains("|"))
                         {
                             result.Error = strResult.Split('|')[1];
                         }
+                        if (result.Error==null || result.Error.ToLower() != PythonError.WebdriverTimeout.ToLower())
+                        {
+                            foreach (string log in resultList)
+                            {
+                                Console.WriteLine(log);
+                            }
+                        }
                     }
                 }
-
-                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  END Python Helper ***");
             }
             catch (Exception e)
             {
@@ -81,6 +91,7 @@ namespace FlightsEngine.FlighsBot
                 cmd.WaitForExit();
                 cmd.Close();
             }
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  END Python Helper ***");
             return result;
         }
 

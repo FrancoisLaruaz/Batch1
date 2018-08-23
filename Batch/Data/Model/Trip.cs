@@ -21,25 +21,15 @@ namespace Data.Model
         }
     
         public int Id { get; set; }
-        public System.DateTime CreationDate { get; set; }
-        public Nullable<int> FromAirportId { get; set; }
-        public Nullable<int> ToAirportId { get; set; }
-        public System.DateTime DepartureDate { get; set; }
-        public System.DateTime ArrivalDate { get; set; }
-        public int ProviderId { get; set; }
         public Nullable<int> CurrencyId { get; set; }
-        public Nullable<decimal> Price { get; set; }
+        public decimal Price { get; set; }
         public string Url { get; set; }
-        public Nullable<int> FromCityId { get; set; }
-        public Nullable<int> ToCityId { get; set; }
+        public int SearchTripProviderId { get; set; }
+        public Nullable<decimal> EuroPrice { get; set; }
     
-        public virtual Airport Airport { get; set; }
-        public virtual Airport Airport1 { get; set; }
-        public virtual City City { get; set; }
-        public virtual City City1 { get; set; }
         public virtual Currency Currency { get; set; }
-        public virtual Provider Provider { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Flight> Flights { get; set; }
+        public virtual SearchTripProvider SearchTripProvider { get; set; }
     }
 }

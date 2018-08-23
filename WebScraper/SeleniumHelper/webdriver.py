@@ -13,6 +13,7 @@ from selenium.webdriver.common.by import By
 from datetime import datetime, timezone
 import time
 from selenium.common.exceptions import NoSuchElementException
+from Helper.constants import *
 
 def getFirefoxDriver(host,port):
 	try:
@@ -79,8 +80,13 @@ def getGoogleChromeDriver(fullproxy):
 	try:
 		proxy=fullproxy.split(' ')[0]
 		print("proxy used : "+proxy)
+		WINDOW_SIZE = "1920,1080"
 		option = webdriver.ChromeOptions()
 		option.add_argument("--incognito")
+		if hideBrowser=="YES":
+			option.add_argument("--headless")  
+			option.add_argument("--window-size=%s" % WINDOW_SIZE)		
+		#option.add_argument("--headless")
 		prox = Proxy()
 		prox.proxy_type = ProxyType.MANUAL
 		prox.http_proxy = proxy
@@ -90,6 +96,7 @@ def getGoogleChromeDriver(fullproxy):
 		capabilities = webdriver.DesiredCapabilities.CHROME
 		prox.add_to_capabilities(capabilities)
 		browser = webdriver.Chrome(executable_path="C:\\webdrivers\\chromedriver.exe", chrome_options=option,desired_capabilities=capabilities)
+		#browser.set_window_position(-10000, 0)
 		return browser
 	except Exception:
 		LogError(traceback,"fullproxy = "+fullproxy)

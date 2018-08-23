@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="TemplateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Address">
     <Key>
       <PropertyRef Name="Id" />
@@ -35,6 +35,7 @@
     <Property Name="Latitude" Type="nvarchar" MaxLength="32" />
     <Property Name="Longitude" Type="nvarchar" MaxLength="32" />
     <Property Name="CityId" Type="int" Nullable="false" />
+    <Property Name="BusyAirport" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="AspNetRoles">
     <Key>
@@ -133,6 +134,8 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
     <Property Name="Code" Type="varchar" MaxLength="255" />
+    <Property Name="Symbol" Type="nvarchar" MaxLength="10" />
+    <Property Name="EuroConversationRate" Type="decimal" Precision="38" Scale="19" Nullable="false" />
   </EntityType>
   <EntityType Name="EmailAudit">
     <Key>
@@ -164,23 +167,16 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CreationDate" Type="datetime" Nullable="false" />
-    <Property Name="Number" Type="nvarchar" MaxLength="100" />
+    <Property Name="FlightNumber" Type="nvarchar" MaxLength="100" />
     <Property Name="FromAirportId" Type="int" Nullable="false" />
     <Property Name="ToAirportId" Type="int" Nullable="false" />
     <Property Name="DepartureDate" Type="datetime" Nullable="false" />
     <Property Name="ArrivalDate" Type="datetime" Nullable="false" />
     <Property Name="AirlineId" Type="int" Nullable="false" />
-    <Property Name="CurrencyId" Type="int" />
-    <Property Name="Price" Type="decimal" Precision="25" Scale="2" />
-  </EntityType>
-  <EntityType Name="FlightTrip">
-    <Key>
-      <PropertyRef Name="FlightId" />
-      <PropertyRef Name="TripId" />
-    </Key>
-    <Property Name="FlightId" Type="int" Nullable="false" />
+    <Property Name="StopNumber" Type="int" />
     <Property Name="TripId" Type="int" Nullable="false" />
+    <Property Name="FlightTypeId" Type="int" Nullable="false" />
+    <Property Name="Duration" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Log4Net">
     <Key>
@@ -251,6 +247,16 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
     <Property Name="ImageSrc" Type="varchar" MaxLength="255" />
+    <Property Name="HasAPI" Type="bit" Nullable="false" />
+    <Property Name="IsSearchEngine" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProviderCountry">
+    <Key>
+      <PropertyRef Name="ProviderId" />
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="ProviderId" Type="int" Nullable="false" />
+    <Property Name="CountryId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Province">
     <Key>
@@ -286,6 +292,32 @@
     <Property Name="SearchResultsCount" Type="int" Nullable="false" />
     <Property Name="ClickedUrl" Type="varchar" MaxLength="256" />
     <Property Name="IsSearchBar" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SearchTrip">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreationDate" Type="datetime" Nullable="false" />
+    <Property Name="FromAirportId" Type="int" />
+    <Property Name="ToAirportId" Type="int" />
+    <Property Name="FromDate" Type="datetime" Nullable="false" />
+    <Property Name="ToDate" Type="datetime" />
+    <Property Name="FromCityId" Type="int" />
+    <Property Name="ToCityId" Type="int" />
+    <Property Name="DirectFlightsOnly" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SearchTripProvider">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreationDate" Type="datetime" Nullable="false" />
+    <Property Name="ProviderId" Type="int" Nullable="false" />
+    <Property Name="SearchTripId" Type="int" Nullable="false" />
+    <Property Name="Proxy" Type="varchar" MaxLength="256" />
+    <Property Name="SearchSuccess" Type="bit" Nullable="false" />
+    <Property Name="EndSearchDate" Type="datetime" />
   </EntityType>
   <EntityType Name="SocialMediaConnection">
     <Key>
@@ -331,17 +363,11 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CreationDate" Type="datetime" Nullable="false" />
-    <Property Name="FromAirportId" Type="int" />
-    <Property Name="ToAirportId" Type="int" />
-    <Property Name="DepartureDate" Type="datetime" Nullable="false" />
-    <Property Name="ArrivalDate" Type="datetime" Nullable="false" />
-    <Property Name="ProviderId" Type="int" Nullable="false" />
     <Property Name="CurrencyId" Type="int" />
-    <Property Name="Price" Type="decimal" Precision="25" Scale="2" />
+    <Property Name="Price" Type="decimal" Precision="25" Scale="2" Nullable="false" />
     <Property Name="Url" Type="varchar" MaxLength="1000" />
-    <Property Name="FromCityId" Type="int" />
-    <Property Name="ToCityId" Type="int" />
+    <Property Name="SearchTripProviderId" Type="int" Nullable="false" />
+    <Property Name="EuroPrice" Type="decimal" Precision="25" Scale="2" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -573,15 +599,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Flight_Currency">
-    <End Role="Currency" Type="Self.Currency" Multiplicity="0..1" />
+  <Association Name="FK_Flight_FlightTypeId">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
     <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Currency">
+      <Principal Role="Category">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Flight">
-        <PropertyRef Name="CurrencyId" />
+        <PropertyRef Name="FlightTypeId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -609,26 +635,14 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_FlightTrip_Flight">
-    <End Role="Flight" Type="Self.Flight" Multiplicity="1" />
-    <End Role="FlightTrip" Type="Self.FlightTrip" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Flight">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="FlightTrip">
-        <PropertyRef Name="FlightId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_FlightTrip_Trip">
+  <Association Name="FK_Flight_Trip">
     <End Role="Trip" Type="Self.Trip" Multiplicity="1" />
-    <End Role="FlightTrip" Type="Self.FlightTrip" Multiplicity="*" />
+    <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Trip">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="FlightTrip">
+      <Dependent Role="Flight">
         <PropertyRef Name="TripId" />
       </Dependent>
     </ReferentialConstraint>
@@ -729,6 +743,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_ProviderCountry_Country">
+    <End Role="Country" Type="Self.Country" Multiplicity="1" />
+    <End Role="ProviderCountry" Type="Self.ProviderCountry" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProviderCountry">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProviderCountry_Provider">
+    <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
+    <End Role="ProviderCountry" Type="Self.ProviderCountry" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provider">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProviderCountry">
+        <PropertyRef Name="ProviderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Province_Country">
     <End Role="Country" Type="Self.Country" Multiplicity="1" />
     <End Role="Province" Type="Self.Province" Multiplicity="*" />
@@ -789,6 +827,78 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_SearchTrip_FromAirport">
+    <End Role="Airport" Type="Self.Airport" Multiplicity="0..1" />
+    <End Role="SearchTrip" Type="Self.SearchTrip" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Airport">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SearchTrip">
+        <PropertyRef Name="FromAirportId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SearchTrip_FromCityId">
+    <End Role="City" Type="Self.City" Multiplicity="0..1" />
+    <End Role="SearchTrip" Type="Self.SearchTrip" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SearchTrip">
+        <PropertyRef Name="FromCityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SearchTrip_ToAirport">
+    <End Role="Airport" Type="Self.Airport" Multiplicity="0..1" />
+    <End Role="SearchTrip" Type="Self.SearchTrip" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Airport">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SearchTrip">
+        <PropertyRef Name="ToAirportId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SearchTrip_ToCityId">
+    <End Role="City" Type="Self.City" Multiplicity="0..1" />
+    <End Role="SearchTrip" Type="Self.SearchTrip" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SearchTrip">
+        <PropertyRef Name="ToCityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SearchTripProvider_Provider">
+    <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
+    <End Role="SearchTripProvider" Type="Self.SearchTripProvider" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provider">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SearchTripProvider">
+        <PropertyRef Name="ProviderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SearchTripProvider_SearchTrip">
+    <End Role="SearchTrip" Type="Self.SearchTrip" Multiplicity="1" />
+    <End Role="SearchTripProvider" Type="Self.SearchTripProvider" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SearchTrip">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SearchTripProvider">
+        <PropertyRef Name="SearchTripId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_SubProvince_Province">
     <End Role="Province" Type="Self.Province" Multiplicity="1" />
     <End Role="SubProvince" Type="Self.SubProvince" Multiplicity="*" />
@@ -813,63 +923,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Trip_FromAirport">
-    <End Role="Airport" Type="Self.Airport" Multiplicity="0..1" />
+  <Association Name="FK_Trip_SearchTripProvider">
+    <End Role="SearchTripProvider" Type="Self.SearchTripProvider" Multiplicity="1" />
     <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Airport">
+      <Principal Role="SearchTripProvider">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Trip">
-        <PropertyRef Name="FromAirportId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Trip_FromCityId">
-    <End Role="City" Type="Self.City" Multiplicity="0..1" />
-    <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="City">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Trip">
-        <PropertyRef Name="FromCityId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Trip_Provider">
-    <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
-    <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Provider">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Trip">
-        <PropertyRef Name="ProviderId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Trip_ToAirport">
-    <End Role="Airport" Type="Self.Airport" Multiplicity="0..1" />
-    <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Airport">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Trip">
-        <PropertyRef Name="ToAirportId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Trip_ToCityId">
-    <End Role="City" Type="Self.City" Multiplicity="0..1" />
-    <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="City">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Trip">
-        <PropertyRef Name="ToCityId" />
+        <PropertyRef Name="SearchTripProviderId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -961,6 +1023,36 @@
     <Parameter Name="UserId" Type="int" Mode="In" />
   </Function>
   <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="InsertInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Error_Message" Type="varchar" Mode="In" />
+    <Parameter Name="Exception" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="InsertLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Error_Message" Type="varchar" Mode="In" />
+    <Parameter Name="Exception" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="InsertTripWithTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="SearchTripProviderId" Type="int" Mode="In" />
+    <Parameter Name="Price" Type="decimal" Mode="In" />
+    <Parameter Name="CurrencyCode" Type="varchar" Mode="In" />
+    <Parameter Name="Url" Type="varchar" Mode="In" />
+    <Parameter Name="OneWayTrip_FromAirportCode" Type="varchar" Mode="In" />
+    <Parameter Name="OneWayTrip_ToAirportCode" Type="varchar" Mode="In" />
+    <Parameter Name="OneWayTrip_DepartureDate" Type="varchar" Mode="In" />
+    <Parameter Name="OneWayTrip_ArrivalDate" Type="varchar" Mode="In" />
+    <Parameter Name="OneWayTrip_Duration" Type="int" Mode="In" />
+    <Parameter Name="OneWayTrip_AirlineName" Type="varchar" Mode="In" />
+    <Parameter Name="OneWayTrip_AirlineLogoSrc" Type="varchar" Mode="In" />
+    <Parameter Name="OneWayTrip_Stops" Type="int" Mode="In" />
+    <Parameter Name="ReturnTrip_FromAirportCode" Type="varchar" Mode="In" />
+    <Parameter Name="ReturnTrip_ToAirportCode" Type="varchar" Mode="In" />
+    <Parameter Name="ReturnTrip_DepartureDate" Type="varchar" Mode="In" />
+    <Parameter Name="ReturnTrip_ArrivalDate" Type="varchar" Mode="In" />
+    <Parameter Name="ReturnTrip_Duration" Type="int" Mode="In" />
+    <Parameter Name="ReturnTrip_AirlineName" Type="varchar" Mode="In" />
+    <Parameter Name="ReturnTrip_AirlineLogoSrc" Type="varchar" Mode="In" />
+    <Parameter Name="ReturnTrip_Stops" Type="int" Mode="In" />
+  </Function>
   <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
     <Parameter Name="owner_id" Type="int" Mode="In" />
@@ -991,7 +1083,7 @@
     <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-  <EntityContainer Name="ModelStoreContainer">
+  <EntityContainer Name="TemplateModelStoreContainer">
     <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Airline" EntityType="Self.Airline" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Airport" EntityType="Self.Airport" Schema="dbo" store:Type="Tables" />
@@ -1008,16 +1100,18 @@
     <EntitySet Name="EmailAudit" EntityType="Self.EmailAudit" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="EmailTypeLanguage" EntityType="Self.EmailTypeLanguage" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Flight" EntityType="Self.Flight" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="FlightTrip" EntityType="Self.FlightTrip" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Log4Net" EntityType="Self.Log4Net" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductSubType" EntityType="Self.ProductSubType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Provider" EntityType="Self.Provider" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProviderCountry" EntityType="Self.ProviderCountry" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Province" EntityType="Self.Province" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ScheduledTask" EntityType="Self.ScheduledTask" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SearchResult" EntityType="Self.SearchResult" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SearchTrip" EntityType="Self.SearchTrip" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SearchTripProvider" EntityType="Self.SearchTripProvider" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SocialMediaConnection" EntityType="Self.SocialMediaConnection" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SubProvince" EntityType="Self.SubProvince" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -1086,8 +1180,8 @@
       <End Role="Airline" EntitySet="Airline" />
       <End Role="Flight" EntitySet="Flight" />
     </AssociationSet>
-    <AssociationSet Name="FK_Flight_Currency" Association="Self.FK_Flight_Currency">
-      <End Role="Currency" EntitySet="Currency" />
+    <AssociationSet Name="FK_Flight_FlightTypeId" Association="Self.FK_Flight_FlightTypeId">
+      <End Role="Category" EntitySet="Category" />
       <End Role="Flight" EntitySet="Flight" />
     </AssociationSet>
     <AssociationSet Name="FK_Flight_FromAirport" Association="Self.FK_Flight_FromAirport">
@@ -1098,13 +1192,9 @@
       <End Role="Airport" EntitySet="Airport" />
       <End Role="Flight" EntitySet="Flight" />
     </AssociationSet>
-    <AssociationSet Name="FK_FlightTrip_Flight" Association="Self.FK_FlightTrip_Flight">
-      <End Role="Flight" EntitySet="Flight" />
-      <End Role="FlightTrip" EntitySet="FlightTrip" />
-    </AssociationSet>
-    <AssociationSet Name="FK_FlightTrip_Trip" Association="Self.FK_FlightTrip_Trip">
+    <AssociationSet Name="FK_Flight_Trip" Association="Self.FK_Flight_Trip">
       <End Role="Trip" EntitySet="Trip" />
-      <End Role="FlightTrip" EntitySet="FlightTrip" />
+      <End Role="Flight" EntitySet="Flight" />
     </AssociationSet>
     <AssociationSet Name="FK_News_LastModificationUserId" Association="Self.FK_News_LastModificationUserId">
       <End Role="User" EntitySet="User" />
@@ -1138,6 +1228,14 @@
       <End Role="ProductType" EntitySet="ProductType" />
       <End Role="ProductSubType" EntitySet="ProductSubType" />
     </AssociationSet>
+    <AssociationSet Name="FK_ProviderCountry_Country" Association="Self.FK_ProviderCountry_Country">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="ProviderCountry" EntitySet="ProviderCountry" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProviderCountry_Provider" Association="Self.FK_ProviderCountry_Provider">
+      <End Role="Provider" EntitySet="Provider" />
+      <End Role="ProviderCountry" EntitySet="ProviderCountry" />
+    </AssociationSet>
     <AssociationSet Name="FK_Province_Country" Association="Self.FK_Province_Country">
       <End Role="Country" EntitySet="Country" />
       <End Role="Province" EntitySet="Province" />
@@ -1158,6 +1256,30 @@
       <End Role="User" EntitySet="User" />
       <End Role="SearchResult" EntitySet="SearchResult" />
     </AssociationSet>
+    <AssociationSet Name="FK_SearchTrip_FromAirport" Association="Self.FK_SearchTrip_FromAirport">
+      <End Role="Airport" EntitySet="Airport" />
+      <End Role="SearchTrip" EntitySet="SearchTrip" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SearchTrip_FromCityId" Association="Self.FK_SearchTrip_FromCityId">
+      <End Role="City" EntitySet="City" />
+      <End Role="SearchTrip" EntitySet="SearchTrip" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SearchTrip_ToAirport" Association="Self.FK_SearchTrip_ToAirport">
+      <End Role="Airport" EntitySet="Airport" />
+      <End Role="SearchTrip" EntitySet="SearchTrip" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SearchTrip_ToCityId" Association="Self.FK_SearchTrip_ToCityId">
+      <End Role="City" EntitySet="City" />
+      <End Role="SearchTrip" EntitySet="SearchTrip" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SearchTripProvider_Provider" Association="Self.FK_SearchTripProvider_Provider">
+      <End Role="Provider" EntitySet="Provider" />
+      <End Role="SearchTripProvider" EntitySet="SearchTripProvider" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SearchTripProvider_SearchTrip" Association="Self.FK_SearchTripProvider_SearchTrip">
+      <End Role="SearchTrip" EntitySet="SearchTrip" />
+      <End Role="SearchTripProvider" EntitySet="SearchTripProvider" />
+    </AssociationSet>
     <AssociationSet Name="FK_SubProvince_Province" Association="Self.FK_SubProvince_Province">
       <End Role="Province" EntitySet="Province" />
       <End Role="SubProvince" EntitySet="SubProvince" />
@@ -1166,24 +1288,8 @@
       <End Role="Currency" EntitySet="Currency" />
       <End Role="Trip" EntitySet="Trip" />
     </AssociationSet>
-    <AssociationSet Name="FK_Trip_FromAirport" Association="Self.FK_Trip_FromAirport">
-      <End Role="Airport" EntitySet="Airport" />
-      <End Role="Trip" EntitySet="Trip" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Trip_FromCityId" Association="Self.FK_Trip_FromCityId">
-      <End Role="City" EntitySet="City" />
-      <End Role="Trip" EntitySet="Trip" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Trip_Provider" Association="Self.FK_Trip_Provider">
-      <End Role="Provider" EntitySet="Provider" />
-      <End Role="Trip" EntitySet="Trip" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Trip_ToAirport" Association="Self.FK_Trip_ToAirport">
-      <End Role="Airport" EntitySet="Airport" />
-      <End Role="Trip" EntitySet="Trip" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Trip_ToCityId" Association="Self.FK_Trip_ToCityId">
-      <End Role="City" EntitySet="City" />
+    <AssociationSet Name="FK_Trip_SearchTripProvider" Association="Self.FK_Trip_SearchTripProvider">
+      <End Role="SearchTripProvider" EntitySet="SearchTripProvider" />
       <End Role="Trip" EntitySet="Trip" />
     </AssociationSet>
     <AssociationSet Name="FK_User_Address" Association="Self.FK_User_Address">

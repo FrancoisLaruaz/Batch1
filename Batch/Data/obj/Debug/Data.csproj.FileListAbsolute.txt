@@ -29,7 +29,6 @@ D:\DEV\Batch1\Batch\Data\bin\Debug\EntityFramework.SqlServer.xml
 D:\DEV\Batch1\Batch\Data\bin\Debug\Microsoft.AspNet.Identity.Core.xml
 D:\DEV\Batch1\Batch\Data\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
 D:\DEV\Batch1\Batch\Data\bin\Debug\Z.EntityFramework.Plus.EF6.xml
-D:\DEV\Batch1\Batch\Data\obj\Debug\Data.csprojAssemblyReference.cache
 D:\DEV\Batch1\Batch\Data\obj\Debug\Data.csproj.CoreCompileInputs.cache
 D:\DEV\Batch1\Batch\Data\obj\Debug\Data.csproj.CopyComplete
 D:\DEV\Batch1\Batch\Data\obj\Debug\Data.dll

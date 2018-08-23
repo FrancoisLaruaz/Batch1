@@ -18,8 +18,8 @@ namespace Data.Model
         public City()
         {
             this.Airports = new HashSet<Airport>();
-            this.Trips = new HashSet<Trip>();
-            this.Trips1 = new HashSet<Trip>();
+            this.SearchTrips = new HashSet<SearchTrip>();
+            this.SearchTrips1 = new HashSet<SearchTrip>();
         }
     
         public int Id { get; set; }
@@ -32,8 +32,8 @@ namespace Data.Model
         public virtual ICollection<Airport> Airports { get; set; }
         public virtual Country Country { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Trip> Trips { get; set; }
+        public virtual ICollection<SearchTrip> SearchTrips { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Trip> Trips1 { get; set; }
+        public virtual ICollection<SearchTrip> SearchTrips1 { get; set; }
     }
 }
