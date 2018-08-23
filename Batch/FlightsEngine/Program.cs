@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlightsEngine.FlighsAPI;
+using FlightsEngine.FlighsBot;
 using FlightsEngine.Models;
 
 namespace FlightsEngine
 {
     public static class Program
     {
-        public static  bool SearchFlights(string MainPythonScriptPath,string PythonPath)
+        public static  bool SearchFlights(int? SearchTripId,string MainPythonScriptPath,string PythonPath)
         {
             bool result = false;
             try
@@ -24,16 +25,28 @@ namespace FlightsEngine
                 filter1.AdultsNumber = 1;
                 filter1.DirectFlightsOnly = true;
 
-                string Proxy = "185.188.191.247:21776 SK-H-S +";
-                ScrappingSearch scrappingSearch = new ScrappingSearch();
-                scrappingSearch.Proxy = Proxy;
-                scrappingSearch.PythonPath = PythonPath;
-                scrappingSearch.MainPythonScriptPath = MainPythonScriptPath;
-                scrappingSearch.SearchTripProviderId = 1;
-                scrappingSearch.Provider = "Edreams";
+                List<ProxyItem> Proxies = ProxyHelper.GetProxies();
+                if (Proxies != null && Proxies.Count > 0)
+                {
+                    // https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list.txt
+                    string Proxy = ProxyHelper.GetBestProxy(Proxies);   // "77.77.47.138:8080 BG-H-S +";
+                    if (Proxy == null)
+                    {
+                        Proxies = ProxyHelper.GetProxies();
+                        Proxy = ProxyHelper.GetBestProxy(Proxies);
+                    }
 
-                Task.Factory.StartNew(() =>  FlighsBot.PythonHelper.Run(filter1, scrappingSearch));
-                Task.Factory.StartNew(() => FlighsBot.PythonHelper.Run(filter1, scrappingSearch));
+                    ScrappingSearch scrappingSearch = new ScrappingSearch();
+                    scrappingSearch.Proxy = Proxy;
+                    scrappingSearch.PythonPath = PythonPath;
+                    scrappingSearch.MainPythonScriptPath = MainPythonScriptPath;
+                    scrappingSearch.SearchTripProviderId = 1;
+                    scrappingSearch.Provider = "Edreams";
+
+
+                    result=FlighsBot.PythonHelper.Run(filter1, scrappingSearch).Success;
+                }
+              //  Task.Factory.StartNew(() => FlighsBot.PythonHelper.Run(filter1, scrappingSearch));
                 // Console.WriteLine("Pythonresult = "+ Pythonresult.Success+" and Error = "+ (Pythonresult.Error??""));
 
                 //   FlighsBot.Kayak.SearchFlights(filter1);
@@ -47,14 +60,12 @@ namespace FlightsEngine
             }
             catch(Exception e)
             {
-                FlightsEngine.Utils.Logger.GenerateError(e, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                result = false;
+                FlightsEngine.Utils.Logger.GenerateError(e, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, "SearchTripId = "+ ( SearchTripId==null?"NULL" : SearchTripId.ToString())+ " and MainPythonScriptPath = "+ MainPythonScriptPath+ " and PythonPath = "+ PythonPath);
             }
             return result;
         }
 
-        public static void SearchFlights(object p1, object p2, object p3)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

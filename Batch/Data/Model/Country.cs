@@ -19,6 +19,7 @@ namespace Data.Model
         {
             this.Cities = new HashSet<City>();
             this.Provinces = new HashSet<Province>();
+            this.Providers = new HashSet<Provider>();
         }
     
         public int Id { get; set; }
@@ -29,5 +30,7 @@ namespace Data.Model
         public virtual ICollection<City> Cities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Province> Provinces { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Provider> Providers { get; set; }
     }
 }

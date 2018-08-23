@@ -13,10 +13,23 @@ namespace Batch1
         {
             try
             {
-                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  START ***");
+                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  START BATCH ***");
                 log4net.Config.XmlConfigurator.Configure();
-                FlightsEngine.Program.SearchFlights(ConfigurationManager.AppSettings["MainPythonScriptPath"], ConfigurationManager.AppSettings["PythonPath"]);
-                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  END ***");
+                int? SearchTripId = null;
+                if(args!=null && args.Length>0)
+                {
+                    SearchTripId = Convert.ToInt32(args[0]);
+                }
+                bool result=FlightsEngine.Program.SearchFlights(SearchTripId,ConfigurationManager.AppSettings["MainPythonScriptPath"], ConfigurationManager.AppSettings["PythonPath"]);
+                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  END BATCH ***");
+                if (result)
+                {
+                    Console.WriteLine("OK");
+                }
+                else
+                {
+                    Console.WriteLine("KO");
+                }
                 if (ConfigurationManager.AppSettings["ExitWhenFinished"] == "NO")
                 {
                     Console.WriteLine("Press Enter to exit.");
@@ -26,6 +39,7 @@ namespace Batch1
             catch(Exception e)
             {
                 Console.WriteLine("Error : "+e.ToString());
+                Console.WriteLine("KO");
             }
         }
     }

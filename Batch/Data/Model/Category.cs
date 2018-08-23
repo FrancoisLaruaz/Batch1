@@ -19,6 +19,7 @@ namespace Data.Model
         {
             this.EmailTypeLanguages = new HashSet<EmailTypeLanguage>();
             this.EmailTypeLanguages1 = new HashSet<EmailTypeLanguage>();
+            this.Flights = new HashSet<Flight>();
             this.News = new HashSet<News>();
             this.News1 = new HashSet<News>();
             this.Products = new HashSet<Product>();
@@ -42,6 +43,8 @@ namespace Data.Model
         public virtual ICollection<EmailTypeLanguage> EmailTypeLanguages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmailTypeLanguage> EmailTypeLanguages1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Flight> Flights { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<News> News { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

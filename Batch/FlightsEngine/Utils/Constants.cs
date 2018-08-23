@@ -28,6 +28,12 @@ namespace FlightsEngine.Utils
 
     }
 
+    public static class PythonError
+    {
+        public const string WebdriverTimeout = "waitForWebdriver";
+
+    }
+
     public static class AIRFranceKLMTravelHost
     {
         public const string KL = "KL";
