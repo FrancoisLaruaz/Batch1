@@ -35,7 +35,7 @@ namespace FlightsEngine.FlighsBot
                     scrappingSearch.ProxiesList.Find(p => p.Proxy == scrappingSearch.Proxy).UseNumber = proxyItemToModify.UseNumber + 1;
                     if (!result.Success)
                     {
-                        scrappingSearch.ProxiesList.Find(p => p.Proxy == scrappingSearch.Proxy).UseNumber = proxyItemToModify.Failure + 1;
+                        scrappingSearch.ProxiesList.Find(p => p.Proxy == scrappingSearch.Proxy).Failure = proxyItemToModify.Failure + 1;
                         scrappingSearch.Proxy = ProxyHelper.GetBestProxy(scrappingSearch.ProxiesList);
                     }
 

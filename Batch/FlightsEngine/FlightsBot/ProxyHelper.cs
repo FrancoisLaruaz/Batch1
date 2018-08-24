@@ -24,7 +24,7 @@ namespace FlightsEngine.FlighsBot
         public static List<ProxyItem>  GetProxies()
         {
             List<ProxyItem> result = new List<ProxyItem>();
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  START Proxy Helper ***");
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " **  START Proxy Helper **");
             try
             {
                 WebClient client = new WebClient();
@@ -37,7 +37,7 @@ namespace FlightsEngine.FlighsBot
                     {
                         string[] tabProxy = line.Split(' ');
                         ProxyItem item = new ProxyItem();
-                        item.Proxy = tabProxy[0];
+                        item.Proxy = line;
                         item.CountryCode= tabProxy[1].Substring(0,2);
                         item.CountryToAvoid = CountriesToAvoid.Contains(item.CountryCode);
                         result.Add(item);
@@ -51,7 +51,7 @@ namespace FlightsEngine.FlighsBot
             {
                 FlightsEngine.Utils.Logger.GenerateError(e, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             }
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  END Proxy Helper ***");
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " **  END Proxy Helper **");
             return result;
         }
 

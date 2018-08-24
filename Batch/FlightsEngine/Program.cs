@@ -29,7 +29,7 @@ namespace FlightsEngine
                 if (Proxies != null && Proxies.Count > 0)
                 {
                     // https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list.txt
-                    string Proxy = ProxyHelper.GetBestProxy(Proxies);   // "77.77.47.138:8080 BG-H-S +";
+                    string Proxy = ProxyHelper.GetBestProxy(Proxies);  
                     if (Proxy == null)
                     {
                         Proxies = ProxyHelper.GetProxies();

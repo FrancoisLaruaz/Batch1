@@ -85,7 +85,7 @@ def ExtractData(element,url,fromDate,toDate,searchTripProviderId):
 				flightNumber=0
 				flights=way.find_elements_by_xpath(".//div[@class='odf-row-fluid odf-space-inner-top-s odf-space-inner-bottom-s sp_container']");
 				for flight in flights:
-					if flight!= None and  flight.text!!= None and  flight.text.strip()!='' :
+					if flight!= None and  flight.text!= None and  flight.text.strip()!='' :
 						print("flight = "+flight.text)
 						flightNumber=flightNumber+1
 						print("Flight number :"+str(flightNumber))
