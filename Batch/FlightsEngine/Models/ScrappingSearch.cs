@@ -10,8 +10,10 @@ namespace FlightsEngine.Models
     {
         public ScrappingSearch()
         {
-
+            ProxiesList = new List<ProxyItem>();
         }
+
+        public List<ProxyItem> ProxiesList { get; set; }
 
         public string Proxy { get; set; }
 

@@ -11,7 +11,12 @@ namespace FlightsEngine.Models
         public PythonExecutionResult()
         {
 
+            ProxiesList = new List<ProxyItem>();
         }
+
+        public List<ProxyItem> ProxiesList { get; set; }
+
+        public int FoundTripsNumber { get; set; }
 
         public string Error { get; set; }
 

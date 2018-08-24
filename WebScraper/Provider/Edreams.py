@@ -19,6 +19,7 @@ from Helper.dateHelper import *
 
 def SearchEdreams(proxy,searchTripProviderId,origin,destination,direct,fromDate,toDate):
 	result="KO|"
+	count=0
 	try:
 		print ("** Begin Edreams **")
 
@@ -40,11 +41,14 @@ def SearchEdreams(proxy,searchTripProviderId,origin,destination,direct,fromDate,
 			
 			elements = browser.find_elements_by_xpath("//div[@class='result od-resultpage-wrapper    ']")
 			for element in elements:
-				ExtractData(element,url,fromDate,toDate,searchTripProviderId)
+				count=count+ExtractData(element,url,fromDate,toDate,searchTripProviderId)
 			elements = browser.find_elements_by_xpath("//div[@class='result od-resultpage-wrapper highlighted odf-box  ']")
 			for element in elements:
-				ExtractData(element,url,fromDate,toDate,searchTripProviderId)		
-			result="OK"
+				count=count+ExtractData(element,url,fromDate,toDate,searchTripProviderId)	
+			if count>=0:
+				result="OK|"+str(count)
+			else:
+				result="KO|Unexpected error"
 		browser.quit()
 		print ("** End Edreams **\n")
 	except Exception:
@@ -62,6 +66,9 @@ def GetDateForUrl(date):
 	return	result
 	
 def ExtractData(element,url,fromDate,toDate,searchTripProviderId):
+	count=0
+	text=""
+	time=""
 	try:
 		print("*** Begin study element ***")
 		text=element.text				
@@ -78,59 +85,61 @@ def ExtractData(element,url,fromDate,toDate,searchTripProviderId):
 				flightNumber=0
 				flights=way.find_elements_by_xpath(".//div[@class='odf-row-fluid odf-space-inner-top-s odf-space-inner-bottom-s sp_container']");
 				for flight in flights:
-					flightNumber=flightNumber+1
-					print("Flight number :"+str(flightNumber))
-					rightDiv=flight.find_element_by_xpath(".//div[@class='odf-row-fluid odf-text-left odf-text-sm od-secondary-flight-info-time-stops-wrapper']")
-					time=flight.find_element_by_xpath(".//div[@class='odf-row odf-h3']").text.replace(" ", "");
-					print("time = "+time)
-					hours=time.split('-')[0]
-					if wayId=="1":
-						baseDate=fromDate
-					elif wayId=="2":
-						baseDate=toDate
-					if len(hours.split('+'))==2:
-						departureTime=addDay(baseDate,hours.split('+')[1][0:1])+' '+hours.split('+')[0]
-					else:
-						departureTime=baseDate+' '+hours
-					hours=time.split('-')[1]	
-					if len(hours.split('+'))==2:						
-						arrivalTime=addDay(baseDate,hours.split('+')[1][0:1])+' '+hours.split('+')[0]
-					else:
-						arrivalTime=baseDate+' '+hours
-					print("departureTime = "+departureTime)
-					print("arrivalTime = "+arrivalTime)
-					duration=getDurationMinute(rightDiv.find_element_by_xpath(".//span[@class='odf-text-nowrap']").text);
-					print("duration = "+str(duration))
-					if checkExistsByXpath(rightDiv,".//span[@class='odf-text-nowrap number_stop ']"):
-						stopNumber=rightDiv.find_element_by_xpath(".//span[@class='odf-text-nowrap number_stop ']").text.split(' ')[0];
-						print("stop Number = "+stopNumber)
-					else :
-						stopNumber="0";
-						print("stop Number = "+stopNumber)
-					airline="*Unkwown*";
-					airlineSrc=""					
-					if checkExistsByXpath(flight,".//img[@class='od-resultpage-segment-itinerary-title-carrier-logo od-primary-description-carrier-icon']"):
-						airlineLogo=flight.find_element_by_xpath(".//img[@class='od-resultpage-segment-itinerary-title-carrier-logo od-primary-description-carrier-icon']");
-						airlineSrc=airlineLogo.get_attribute("src");
-						airline=airlineLogo.get_attribute("alt");
-					else :
-						if checkExistsByXpath(flight,".//div[@class='odf-grid-col odf-col-span1 odf-tooltip-container odf-text-mono-color-03 hover-active-tooltip od-primary-info-airline ficon-condensed']"):
-							airline="*Multiples*";
+					if flight!= None and  flight.text!!= None and  flight.text.strip()!='' :
+						print("flight = "+flight.text)
+						flightNumber=flightNumber+1
+						print("Flight number :"+str(flightNumber))
+						rightDiv=flight.find_element_by_xpath(".//div[@class='odf-row-fluid odf-text-left odf-text-sm od-secondary-flight-info-time-stops-wrapper']")
+						time=flight.find_element_by_xpath(".//div[@class='odf-row odf-h3']").text.replace(" ", "");
+						print("time = "+time)
+						hours=time.split('-')[0]
+						if wayId=="1":
+							baseDate=fromDate
+						elif wayId=="2":
+							baseDate=toDate
+						if len(hours.split('+'))==2:
+							departureTime=addDay(baseDate,hours.split('+')[1][0:1])+' '+hours.split('+')[0]
+						else:
+							departureTime=baseDate+' '+hours
+						hours=time.split('-')[1]	
+						if len(hours.split('+'))==2:						
+							arrivalTime=addDay(baseDate,hours.split('+')[1][0:1])+' '+hours.split('+')[0]
+						else:
+							arrivalTime=baseDate+' '+hours
+						print("departureTime = "+departureTime)
+						print("arrivalTime = "+arrivalTime)
+						duration=getDurationMinute(rightDiv.find_element_by_xpath(".//span[@class='odf-text-nowrap']").text);
+						print("duration = "+str(duration))
+						if checkExistsByXpath(rightDiv,".//span[@class='odf-text-nowrap number_stop ']"):
+							stopNumber=rightDiv.find_element_by_xpath(".//span[@class='odf-text-nowrap number_stop ']").text.split(' ')[0];
+							print("stop Number = "+stopNumber)
+						else :
+							stopNumber="0";
+							print("stop Number = "+stopNumber)
+						airline="*Unkwown*";
+						airlineSrc=""					
+						if checkExistsByXpath(flight,".//img[@class='od-resultpage-segment-itinerary-title-carrier-logo od-primary-description-carrier-icon']"):
+							airlineLogo=flight.find_element_by_xpath(".//img[@class='od-resultpage-segment-itinerary-title-carrier-logo od-primary-description-carrier-icon']");
+							airlineSrc=airlineLogo.get_attribute("src");
+							airline=airlineLogo.get_attribute("alt");
+						else :
+							if checkExistsByXpath(flight,".//div[@class='odf-grid-col odf-col-span1 odf-tooltip-container odf-text-mono-color-03 hover-active-tooltip od-primary-info-airline ficon-condensed']"):
+								airline="*Multiples*";
 
-					print("airline = "+airline)
-					print("airlineSrc = "+airlineSrc)
-						
-					cities=flight.find_element_by_xpath(".//div[@class='odf-row odf-text-sm od-primary-flight-info-cities hover-active-tooltip odf-text-mono-color-03 flight_info_cities odf-text-nowrap']").text;
-					print("cities = "+cities)
-					fromAirport=cities.split('(')[1].split(')')[0]
-					toAirport=cities.split('(')[2].split(')')[0]
-					print("fromAirport = "+fromAirport)
-					print("toAirport = "+toAirport+"\n")
-					trip=Trip(fromAirport,toAirport,duration,departureTime,arrivalTime,airline,airlineSrc,stopNumber)
-					if wayId=="1":
-						OneWayTrips.append(trip)
-					elif wayId=="2":
-						ReturnTrips.append(trip)				
+						print("airline = "+airline)
+						print("airlineSrc = "+airlineSrc)
+							
+						cities=flight.find_element_by_xpath(".//div[@class='odf-row odf-text-sm od-primary-flight-info-cities hover-active-tooltip odf-text-mono-color-03 flight_info_cities odf-text-nowrap']").text;
+						print("cities = "+cities)
+						fromAirport=cities.split('(')[1].split(')')[0]
+						toAirport=cities.split('(')[2].split(')')[0]
+						print("fromAirport = "+fromAirport)
+						print("toAirport = "+toAirport+"\n")
+						trip=Trip(fromAirport,toAirport,duration,departureTime,arrivalTime,airline,airlineSrc,stopNumber)
+						if wayId=="1":
+							OneWayTrips.append(trip)
+						elif wayId=="2":
+							ReturnTrips.append(trip)				
 			price=element.find_element_by_xpath(".//div[@class='od-price-container  ']").text.replace(" ", "").replace("*", "");
 			currency=price[0:1]
 			price=price[1:]
@@ -139,14 +148,15 @@ def ExtractData(element,url,fromDate,toDate,searchTripProviderId):
 			for OneWayTrip in OneWayTrips :
 				if len(ReturnTrips)>0 :
 					for ReturnTrip in ReturnTrips :
-						InsertTrip(searchTripProviderId,price,currency,url,OneWayTrip,ReturnTrip)
+						count=count+InsertTrip(searchTripProviderId,price,currency,url,OneWayTrip,ReturnTrip)
 		else:
 			print("Train spotted")
 
 		print("*** End study element ***\n")
 	except Exception:
-		LogError(traceback,"url = "+url+" and element = "+element.text+" and fromDate = "+fromDate+" and toDate = "+toDate+" and searchTripProviderId = "+searchTripProviderId)
-	return
+		count=-99999999
+		LogError(traceback,"url = "+url+" and element = "+text+" and fromDate = "+fromDate+" and toDate = "+toDate+" and searchTripProviderId = "+searchTripProviderId+" and time = "+time)
+	return count
 	
 	
 	

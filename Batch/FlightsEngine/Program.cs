@@ -42,9 +42,13 @@ namespace FlightsEngine
                     scrappingSearch.MainPythonScriptPath = MainPythonScriptPath;
                     scrappingSearch.SearchTripProviderId = 1;
                     scrappingSearch.Provider = "Edreams";
+                    scrappingSearch.ProxiesList = Proxies;
 
+                    var ScrappingResult=FlighsBot.PythonHelper.SearchViaScrapping(filter1, scrappingSearch);
+                    Proxies = ScrappingResult.ProxiesList;
 
-                    result=FlighsBot.PythonHelper.Run(filter1, scrappingSearch).Success;
+                    result = ScrappingResult.Success;
+          
                 }
               //  Task.Factory.StartNew(() => FlighsBot.PythonHelper.Run(filter1, scrappingSearch));
                 // Console.WriteLine("Pythonresult = "+ Pythonresult.Success+" and Error = "+ (Pythonresult.Error??""));

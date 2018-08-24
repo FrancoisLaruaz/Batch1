@@ -33,3 +33,4 @@ D:\DEV\Batch1\Batch\Data\obj\Debug\Data.csproj.CoreCompileInputs.cache
 D:\DEV\Batch1\Batch\Data\obj\Debug\Data.csproj.CopyComplete
 D:\DEV\Batch1\Batch\Data\obj\Debug\Data.dll
 D:\DEV\Batch1\Batch\Data\obj\Debug\Data.pdb
+D:\DEV\Batch1\Batch\Data\obj\Debug\Data.csprojAssemblyReference.cache

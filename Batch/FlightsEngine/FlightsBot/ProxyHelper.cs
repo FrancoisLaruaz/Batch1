@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Data.Linq;
 using System.Data.Common;
 using System.Linq;
+using System.Net;
 
 namespace FlightsEngine.FlighsBot
 {
@@ -26,10 +27,24 @@ namespace FlightsEngine.FlighsBot
             Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  START Proxy Helper ***");
             try
             {
-                ProxyItem item = new ProxyItem();
-                item.Proxy = "82.214.139.109:8080 PL-N! -";
-                item.CountryToAvoid = false;
-                result.Add(item);
+                WebClient client = new WebClient();
+                Stream stream = client.OpenRead("https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list.txt");
+                StreamReader reader = new StreamReader(stream);
+                string line = "";
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if( !String.IsNullOrWhiteSpace(line) && !line.StartsWith("Proxy") && !line.StartsWith("Mirrors")  && !line.StartsWith("IP") && !line.StartsWith("Free"))
+                    {
+                        string[] tabProxy = line.Split(' ');
+                        ProxyItem item = new ProxyItem();
+                        item.Proxy = tabProxy[0];
+                        item.CountryCode= tabProxy[1].Substring(0,2);
+                        item.CountryToAvoid = CountriesToAvoid.Contains(item.CountryCode);
+                        result.Add(item);
+                    }
+                }
+                reader.Close();
+
 
             }
             catch (Exception e)
@@ -65,14 +80,19 @@ namespace FlightsEngine.FlighsBot
                             {
                                 BaseList = ProxiesWithNoFailure;
                             }
-                            BaseList.Sort((x, y) => x.UseNumber.CompareTo(y.UseNumber));
-                            result = Proxies[0].Proxy;
+                            IEnumerable<ProxyItem> IEnumerableProxies = (IEnumerable<ProxyItem>)BaseList;
+                            IEnumerableProxies= IEnumerableProxies.OrderByDescending(x => x.UseNumber).ThenBy(x => Guid.NewGuid());
+                            BaseList = IEnumerableProxies.ToList();
                         }
                         else
                         {
-                            Proxies.Sort((x, y) => y.UseNumber.CompareTo(x.Failure));
-                            result = Proxies[0].Proxy;
+                            BaseList = Proxies;
+                            IEnumerable<ProxyItem> IEnumerableProxies = (IEnumerable<ProxyItem>)BaseList;
+                            IEnumerableProxies = IEnumerableProxies.OrderBy(x => x.Failure).ThenBy(x => Guid.NewGuid());
+                            BaseList = IEnumerableProxies.ToList();
                         }
+  
+                        result = BaseList[0].Proxy;
                     }
                 }
             }

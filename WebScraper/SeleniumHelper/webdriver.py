@@ -59,7 +59,6 @@ def getFirefoxDriver(host,port):
 	return getGoogleChromeDriver(host+":"+port)
 	
 def waitForWebdriver(searchTripProviderId,browser,css_selectorOK,css_selectorKO=""):
-	delay = 60 # seconds
 	result="KO|"
 	try:
 		if css_selectorKO!="":
@@ -67,7 +66,7 @@ def waitForWebdriver(searchTripProviderId,browser,css_selectorOK,css_selectorKO=
 		else:
 			css_selector=css_selectorOK
 		print("begin wait for "+css_selector+" : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
-		wait = WebDriverWait(browser, delay)		
+		wait = WebDriverWait(browser, timeout)		
 		wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
 		result="OK"
 		print("end wait : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])	
@@ -83,10 +82,14 @@ def getGoogleChromeDriver(fullproxy):
 		WINDOW_SIZE = "1920,1080"
 		option = webdriver.ChromeOptions()
 		option.add_argument("--incognito")
+		#option.add_argument("--disable-gpu")
+		#option.add_argument("--disable-infobars")
+		#option.add_argument("--disable-notifications")
+		#option.add_argument("--disable-extensions")
 		if hideBrowser=="YES":
 			option.add_argument("--headless")  
 			option.add_argument("--window-size=%s" % WINDOW_SIZE)		
-		#option.add_argument("--headless")
+
 		prox = Proxy()
 		prox.proxy_type = ProxyType.MANUAL
 		prox.http_proxy = proxy
@@ -100,7 +103,7 @@ def getGoogleChromeDriver(fullproxy):
 		return browser
 	except Exception:
 		LogError(traceback,"fullproxy = "+fullproxy)
-	return null	
+	return None	
 	
 def checkExistsByXpath(webElement,xpath):
 	try:
