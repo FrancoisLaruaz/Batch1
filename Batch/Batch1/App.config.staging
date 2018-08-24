@@ -7,7 +7,7 @@
   </configSections>
   <appSettings>
     <add key="MainPythonScriptPath" value="C:\Test\WebScraper\Main.py" />
-    <add key="PythonPath" value="C:\Users\FrancoisL\AppData\Local\Programs\Python\Python37-32\python.exe" />
+    <add key="PythonPath" value="C:\Test\Python37-32\python.exe" />
     <add key="ExitWhenFinished" value="YES" />
   </appSettings>
   <connectionStrings>

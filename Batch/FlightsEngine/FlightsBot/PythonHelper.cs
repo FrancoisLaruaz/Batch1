@@ -14,9 +14,52 @@ namespace FlightsEngine.FlighsBot
 {
     public static class PythonHelper
     {
+
+
+        public static PythonExecutionResult SearchViaScrapping(AirlineSearch filter, ScrappingSearch scrappingSearch)
+        {
+            PythonExecutionResult result = new PythonExecutionResult();
+            try
+            {
+                int nbMaxAttempts = 3;
+                int nbAttempts = 0;
+                bool continueProcess = true;
+
+                while (continueProcess)
+                {
+                    nbAttempts = nbAttempts + 1;
+                    Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " **  START SearchViaScrapping ** : " + nbAttempts);
+                    result =Run(filter, scrappingSearch);
+
+                    ProxyItem proxyItemToModify = scrappingSearch.ProxiesList.Find(p => p.Proxy == scrappingSearch.Proxy);
+                    scrappingSearch.ProxiesList.Find(p => p.Proxy == scrappingSearch.Proxy).UseNumber = proxyItemToModify.UseNumber + 1;
+                    if (!result.Success)
+                    {
+                        scrappingSearch.ProxiesList.Find(p => p.Proxy == scrappingSearch.Proxy).Failure = proxyItemToModify.Failure + 1;
+                        scrappingSearch.Proxy = ProxyHelper.GetBestProxy(scrappingSearch.ProxiesList);
+                    }
+
+                    continueProcess = !result.Success && nbAttempts < nbMaxAttempts;
+                }
+                result.ProxiesList = scrappingSearch.ProxiesList;
+            }
+            catch (Exception e)
+            {
+                result.Success = false;
+                result.Error = e.ToString();
+            }
+            finally
+            {
+                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " **  END SearchViaScrapping **");
+            }
+            
+            return result;
+        }
+
+
         public static PythonExecutionResult Run(AirlineSearch filter, ScrappingSearch scrappingSearch)
         {
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  START Python Helper ***");
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  START Scrapping *** : " + (scrappingSearch?.Provider ?? "") + " | " + (scrappingSearch?.Proxy ?? ""));
             PythonExecutionResult result = new PythonExecutionResult();
             System.Diagnostics.Process cmd = new System.Diagnostics.Process();
             try
@@ -24,10 +67,10 @@ namespace FlightsEngine.FlighsBot
                 // https://stackoverflow.com/questions/1469764/run-command-prompt-commands
 
 
-                string args = "\""+ scrappingSearch.Proxy + "\" \""+ scrappingSearch.SearchTripProviderId + "\" \"" + scrappingSearch.Provider + "\" \""+ filter.FromAirportCode + "\" \"" + filter.ToAirportCode + "\" \"" + filter.DirectFlightsOnly.ToString().ToLower() + "\" \""+filter.FromDate.Value.ToString("dd'/'MM'/'yyyy") +"\"";
-                if(filter.Return)
+                string args = "\"" + scrappingSearch.Proxy + "\" \"" + scrappingSearch.SearchTripProviderId + "\" \"" + scrappingSearch.Provider + "\" \"" + filter.FromAirportCode + "\" \"" + filter.ToAirportCode + "\" \"" + filter.DirectFlightsOnly.ToString().ToLower() + "\" \"" + filter.FromDate.Value.ToString("dd'/'MM'/'yyyy") + "\"";
+                if (filter.Return)
                 {
-                    args=args + " \"" + filter.ToDate.Value.ToString("dd'/'MM'/'yyyy") + "\"";
+                    args = args + " \"" + filter.ToDate.Value.ToString("dd'/'MM'/'yyyy") + "\"";
                 }
 
 
@@ -61,6 +104,13 @@ namespace FlightsEngine.FlighsBot
                     if (strResult.StartsWith("OK"))
                     {
                         result.Success = true;
+                        if (strResult.Contains("|"))
+                        {
+                            string FoundTripNumber = strResult.Split('|')[1];
+                            if (!String.IsNullOrWhiteSpace(FoundTripNumber)) ;
+                            result.FoundTripsNumber = Convert.ToInt32(FoundTripNumber);
+                        }
+                        result.Error = null;
                     }
                     else
                     {
@@ -69,7 +119,7 @@ namespace FlightsEngine.FlighsBot
                         {
                             result.Error = strResult.Split('|')[1];
                         }
-                        if (result.Error==null || result.Error.ToLower() != PythonError.WebdriverTimeout.ToLower())
+                        if (result.Error == null || result.Error.ToLower() != PythonError.WebdriverTimeout.ToLower())
                         {
                             foreach (string log in resultList)
                             {
@@ -83,15 +133,20 @@ namespace FlightsEngine.FlighsBot
             {
                 result.Success = false;
                 result.Error = e.ToString();
-                FlightsEngine.Utils.Logger.GenerateError(e, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, "Provider = " + scrappingSearch.Provider + " and Proxy = " + scrappingSearch.Proxy + " and filters = "+filter.ToSpecialString());
+                FlightsEngine.Utils.Logger.GenerateError(e, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, "Provider = " + scrappingSearch.Provider + " and Proxy = " + scrappingSearch.Proxy + " and filters = " + filter.ToSpecialString());
             }
             finally
             {
                 cmd.StandardInput.WriteLine("exit");
                 cmd.WaitForExit();
                 cmd.Close();
+
             }
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  END Python Helper ***");
+
+            if (result.Success)
+                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  END Scrapping *** : SUCCESS => " + (String.IsNullOrWhiteSpace(result.Error) ? result.FoundTripsNumber.ToString() : result.Error));
+            else
+                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " ***  END Scrapping *** : FAILURE => " + (result.Error ?? ""));
             return result;
         }
 

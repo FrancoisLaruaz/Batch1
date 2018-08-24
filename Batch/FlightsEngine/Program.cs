@@ -29,7 +29,7 @@ namespace FlightsEngine
                 if (Proxies != null && Proxies.Count > 0)
                 {
                     // https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list.txt
-                    string Proxy = ProxyHelper.GetBestProxy(Proxies);   // "77.77.47.138:8080 BG-H-S +";
+                    string Proxy = ProxyHelper.GetBestProxy(Proxies);  
                     if (Proxy == null)
                     {
                         Proxies = ProxyHelper.GetProxies();
@@ -42,9 +42,13 @@ namespace FlightsEngine
                     scrappingSearch.MainPythonScriptPath = MainPythonScriptPath;
                     scrappingSearch.SearchTripProviderId = 1;
                     scrappingSearch.Provider = "Edreams";
+                    scrappingSearch.ProxiesList = Proxies;
 
+                    var ScrappingResult=FlighsBot.PythonHelper.SearchViaScrapping(filter1, scrappingSearch);
+                    Proxies = ScrappingResult.ProxiesList;
 
-                    result=FlighsBot.PythonHelper.Run(filter1, scrappingSearch).Success;
+                    result = ScrappingResult.Success;
+          
                 }
               //  Task.Factory.StartNew(() => FlighsBot.PythonHelper.Run(filter1, scrappingSearch));
                 // Console.WriteLine("Pythonresult = "+ Pythonresult.Success+" and Error = "+ (Pythonresult.Error??""));
