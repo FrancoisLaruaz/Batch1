@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlightsEngine.Utils;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -38,6 +39,7 @@ namespace Batch1
             }
             catch(Exception e)
             {
+                FlightsEngine.Utils.Logger.GenerateError(e, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, string.Join(" , ", args));
                 Console.WriteLine("Error : "+e.ToString());
                 Console.WriteLine("KO");
             }
