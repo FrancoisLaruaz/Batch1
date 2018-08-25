@@ -117,12 +117,17 @@
     <Compile Include="Utils\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{5ca2f962-bca5-43ac-a9ca-ad0978e37706}</Project>
       <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlightsServices\FlightsServices.csproj">
+      <Project>{49016fe9-51bc-4745-b3bb-eeaf6e7931ee}</Project>
+      <Name>FlightsServices</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
