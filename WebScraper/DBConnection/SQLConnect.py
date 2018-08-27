@@ -2,6 +2,7 @@ import pypyodbc
 from Logger.logger import LogError
 from Helper.constants import *
 import traceback
+from Helper.utils import *
 
 def ExecuteQuery(query):
 	try:
@@ -30,7 +31,7 @@ def CallStoredProc(procName, *args):
 		cur.commit()
 		cur.close()
 		connection.close()
-		print(procName+" executed | returnvalue = "+str(returnvalue))
+		conditionalPrint(procName+" executed | returnvalue = "+str(returnvalue))
 	except Exception:	
 		LogError(traceback,"procName = "+procName+" and args = "+','.join(str(e) for e in args))	
 	return returnvalue

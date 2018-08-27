@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 import time
 from selenium.common.exceptions import NoSuchElementException
 from Helper.constants import *
+from Helper.utils import *
 
 def getFirefoxDriver(host,port):
 	try:
@@ -65,11 +66,11 @@ def waitForWebdriver(searchTripProviderId,browser,css_selectorOK,css_selectorKO=
 			css_selector=css_selectorOK+", "+css_selectorKO
 		else:
 			css_selector=css_selectorOK
-		print("begin wait for "+css_selector+" : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
+		conditionalPrint("begin wait for "+css_selector+" : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
 		wait = WebDriverWait(browser, timeout)		
 		wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
 		result="OK"
-		print("end wait : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])	
+		conditionalPrint("end wait : "+datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])	
 	except Exception:
 		result="KO|waitForWebdriver"
 		LogError(traceback,"searchTripProviderId ="+searchTripProviderId+" and css_selectorOK = "+css_selectorOK+" and css_selectorKO = "+css_selectorKO)
@@ -78,7 +79,7 @@ def waitForWebdriver(searchTripProviderId,browser,css_selectorOK,css_selectorKO=
 def getGoogleChromeDriver(fullproxy):
 	try:
 		proxy=fullproxy.split(' ')[0]
-		print("proxy used : "+proxy)
+		conditionalPrint("proxy used : "+proxy)
 		WINDOW_SIZE = "1920,1080"
 		option = webdriver.ChromeOptions()
 		option.add_argument("--incognito")
